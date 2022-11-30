@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form method="post" enctype='multipart/form-data'>
+    {% csrf_token %}
+    <h1>ثبت نام شخص</h1>
+    {{ register_form.as_p }}
+    <hr>
+    <h1> ثبت اطلاعات ساختمان</h1>
+    {{ building_form.as_p }}
+    <hr>
+    <h1> ثبت اطلاعات واحد</h1>
+    {{ unit_form.as_p }}
+    <br>
+    <button type="submit">register</button>
+</form>
+
+</body>
+</html>

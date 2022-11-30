@@ -1,0 +1,70 @@
+{% extends '../base/base.html' %}
+{% load humanize %}
+
+{% block browser_title %}وضعیت شارژ{% endblock %}
+{% block page_title %}وضعیت شارژ {{ charge_name }}{% endblock %}
+
+{% block sidebar %}
+    {% include "./base/sidebar.html" %}
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title float-left">لیست وضعیت شارژها</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <table class="table table-bordered table-hover dataTable">
+                    <thead>
+                    <tr>
+                        <th>واحد</th>
+                        <th>مبلغ</th>
+                        <th>وضعیت پرداخت</th>
+                        <th>تاریخ پرداخت</th>
+                        <th>نوع پرداخت</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for status in status_list %}
+                        <tr>
+                            <td>{{ status.unit }}</td>
+                            <td>{{ status.amount|intcomma:False }}</td>
+                            <td>
+                                {% if status.is_paid %}
+                                    پرداخت شده
+                                {% else %}
+                                    پرداخت نشده
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if status.pay_time is None %}
+                                    ---
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if status.payment_type is None %}
+                                    ---
+                                {% endif %}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <th>واحد</th>
+                        <th>مبلغ</th>
+                        <th>وضعیت پرداخت</th>
+                        <th>تاریخ پرداخت</th>
+                        <th>نوع پرداخت</th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

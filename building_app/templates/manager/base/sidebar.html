@@ -1,0 +1,156 @@
+{% load static %}
+
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="{% url "building_app_manager:home" %}" class="brand-link">
+        <img src='{% static "adminLTE/dist/img/AdminLTELogo.png" %}' alt="logo"
+             class="brand-image img-circle elevation-3"
+             style="opacity: .8">
+        <span class="brand-text font-weight-light">پنل مدیریت</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src={{ request.user.unit.building.image.url }} class="img-circle-2" alt="User Image">
+            </div>
+            <div class="info">
+                <a href="{% url "building_app_manager:home" %}" class="d-block">{{ request.user.unit.name }}</a>
+            </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class
+                     with font-awesome or any other icon font library -->
+                <li class="nav-item has-treeview menu-open">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            شارژ ساختمان
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{% url 'building_app_manager:charge_list' %}"
+                               class="nav-link {% if request.path == '/manager-panel/charge-list' %}active{% endif %}">
+                                <i class="fas fa-th nav-icon"></i>
+                                <p>لیست شارژها</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'building_app_manager:create_charge' %}"
+                               class="nav-link {% if request.path == '/manager-panel/create-charge' %}active{% endif %}">
+                                <i class="far fa-edit nav-icon"></i>
+                                <p>ایجاد شارژ</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>   <!-- Charge -->
+
+                <li class="nav-item has-treeview menu-open">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            اعلانات
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{% url 'building_app_manager:notification_list' %}"
+                               class="nav-link {% if request.path == '/manager-panel/notification-list' %}active{% endif %}">
+                                <i class="fas fa-th nav-icon"></i>
+                                <p>لیست اعلانات</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'building_app_manager:create_notification' %}"
+                               class="nav-link {% if request.path == '/manager-panel/create-notification' %}active{% endif %}">
+                                <i class="far fa-edit nav-icon"></i>
+                                <p>ایجاد اعلان</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>   <!-- Notification -->
+
+                <li class="nav-item has-treeview menu-open">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            اعتبار
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{% url 'building_app_manager:payment_request_list' %}"
+                               class="nav-link {% if request.path == '/manager-panel/payment-request-list' %}active{% endif %}">
+                                <i class="fas fa-th nav-icon"></i>
+                                <p>درخواست های پرداخت</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'building_app_manager:create_payment_request' %}"
+                               class="nav-link {% if request.path == '/manager-panel/create-payment-request' %}active{% endif %}">
+                                <i class="far fa-edit nav-icon"></i>
+                                <p>درخواست پرداخت</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>   <!-- Payment -->
+
+                <li class="nav-item has-treeview menu-open">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            مدیریت
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{% url 'building_app_manager:unit_list' %}"
+                               class="nav-link {% if request.path == '/manager-panel/unit-list' %}active{% endif %}">
+                                <i class="fas fa-th nav-icon"></i>
+                                <p>
+                                    واحدها
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{% url 'building_app_manager:resign_manager' %}"
+                               class="nav-link {% if request.path == '/manager-panel/resign-manager' %}active{% endif %}">
+                                <i class="fas fa-th nav-icon"></i>
+                                <p>
+                                    استعفا از مدیریت
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{% url 'building_app_manager:vip_service_list' %}"
+                               class="nav-link {% if request.path == '/manager-panel/pricing' %}active{% endif %}">
+                                <i class="fas fa-th nav-icon"></i>
+                                <p>
+                                    سرویس های ویژه
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+
+                </li>   <!-- management -->
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>
