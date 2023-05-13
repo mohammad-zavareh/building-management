@@ -15,8 +15,8 @@ from .forms import (
 from building_app.models import Unit, Building
 
 from random import randint
-from datetime import timedelta
-
+from datetime import datetime
+from django.utils import timezone
 
 def send_sms(code, message):
     code = str(code)
@@ -35,19 +35,21 @@ def login_page(request):
             otp_obj = Otp.objects.filter(phone_number=phone_number)
 
             if not otp_obj.exists():
-                otp = Otp(phone_number=phone_number, code=otp_code)
+                otp = Otp(phone_number=phone_number, code=otp_code,created=datetime.now())
                 otp.save()
-                otp_expire = otp.created + timedelta(minutes=3)
+
             else:
                 otp = otp_obj.first()
                 otp.code = otp_code
+                otp.created = datetime.now()
                 otp.save()
-                otp_expire = otp.created + timedelta(minutes=3)
+
+                print(otp.created)
 
             send_sms(otp_code, message='اینم از کد شما')
 
             request.session['phone_number'] = phone_number  # set session
-            request.session.set_expiry(otp_expire)
+            request.session.set_expiry(600)  # session expire in 10 minutes
 
             return redirect("account_app:login_page_otp")
 
@@ -61,53 +63,55 @@ def login_page_otp(request):
     if 'phone_number' not in request.session:
         return redirect('account_app:login_page')
 
+    context = {}
+
     phone_number = request.session['phone_number']
+    otp = Otp.objects.filter(phone_number=phone_number).first()
+
     form = OtpForm()
+
     if request.method == "POST":
         form = OtpForm(request.POST)
         if form.is_valid():
-            otp_entered = form.cleaned_data['otp']
-            otp_code = Otp.objects.filter(phone_number=phone_number).first().code
+            if otp.get_expire_time() == 0:
+                return redirect('account_app:login_page')
 
-            if otp_entered == otp_code:
-                del request.session['phone_number']
+            otp_entered = form.cleaned_data['otp']
+
+            if otp_entered == otp.code:
                 user = User.objects.filter(phone_number=phone_number)
                 if user.exists():
                     login(request, user.first())  # first because user is list
-                    if request.user.is_authenticated:
-                        print("is login")
-                    else:
-                        print("not login")
+
                     unit = Unit.objects.filter(resident__phone_number=phone_number).first()
                     if unit.is_manager:
                         return redirect('building_app_manager:home')
                     else:
                         return redirect('building_app_resident:home')
                 else:
-                    request.session['phone_number_for_register'] = phone_number
-                    request.session.set_expiry(600)  # session expire in 10 minutes
                     return redirect("account_app:choice_user_type")
             else:
-                print('not correct')
+                context["message"] = 'کد وارد شده اشتباه است'
 
-    context = {
+    context.update({
         'phone_number': phone_number,
+        'expire_time': otp.get_expire_time(),
         'form': form
-    }
+    })
     return render(request, 'login_page_otp.html', context)
 
 
 def choice_user_type(request):
-    if 'phone_number_for_register' not in request.session:
+    if 'phone_number' not in request.session:
         return redirect('account_app:login_page')
 
     return render(request, 'choice_user_type.html')
 
 
 def manager_register_page(request):
-    if 'phone_number_for_register' not in request.session:
+    if 'phone_number' not in request.session:
         return redirect('account_app:login_page')
-    phone_number = request.session['phone_number_for_register']
+    phone_number = request.session['phone_number']
 
     if request.method == "POST":
         register_form = RegisterForm(request.POST, prefix='register_form')
@@ -128,7 +132,7 @@ def manager_register_page(request):
             unit.save()
 
             login(request, user)
-            return redirect('building_app_manager:manager_panel')
+            return redirect('building_app_manager:home')
     else:
         context = {
             'register_form': RegisterForm(prefix='register_form'),
@@ -140,9 +144,9 @@ def manager_register_page(request):
 
 
 def resident_register_page(request):
-    if 'phone_number_for_register' not in request.session:
+    if 'phone_number' not in request.session:
         return redirect('account_app:login_page')
-    phone_number = request.session['phone_number_for_register']
+    phone_number = request.session['phone_number']
 
     if request.method == "POST":
         register_form = RegisterForm(request.POST, prefix='register_form')

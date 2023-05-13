@@ -8,6 +8,9 @@
 <h1>login otp page</h1>
 <div>
     <form method="post">
+        <b>{{ message }}</b>
+        <b>{{ phone_number }}</b><br>
+        <b>{{ expire_time }}</b><br>
         {% csrf_token %}
         {{ form }}
         <button type="submit">login</button>

@@ -1,6 +1,9 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 
+from datetime import timedelta, datetime
+from time import strftime
+
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
@@ -50,4 +53,20 @@ class User(AbstractUser):
 class Otp(models.Model):
     phone_number = models.IntegerField(unique=True)
     code = models.IntegerField()
-    created = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField()
+
+    def get_expire_time(self):
+        time_to_expire = 1
+        created_time = self.created.replace(tzinfo=None)
+
+        print(created_time)
+        expire_time = created_time + timedelta(minutes=time_to_expire)
+
+        now = datetime.now()
+        if expire_time > now:
+            time_reverse = expire_time - now
+            time_reverse_seconds = time_reverse.seconds
+        else:
+            time_reverse_seconds = 0
+
+        return time_reverse_seconds
