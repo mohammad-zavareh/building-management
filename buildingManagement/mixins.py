@@ -1,7 +1,8 @@
 from django.http import Http404
-from django.shortcuts import redirect
 
-from building_app.models import Unit,ServiceCharge,Notification
+from building_app.models import Unit
+from notification_app.models import Notification
+from charge_app.models import ServiceCharge
 
 def convert_to_list(list_of_dictionary):
     result = []

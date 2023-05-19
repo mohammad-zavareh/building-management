@@ -7,7 +7,8 @@ from django.utils import timezone
 
 from account_app.models import User
 from vip_service_app.models import VipService
-from building_app.models import Building,Unit
+from building_app.models import Building, Unit, Category
+
 
 class ServiceCharge(models.Model):  # divide_members   divide_units
     divide_type = [

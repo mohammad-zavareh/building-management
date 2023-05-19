@@ -2,7 +2,7 @@
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="{% url "building_app_manager:home" %}" class="brand-link">
+    <a href="{% url "dashboard_app:manager_dashboard" %}" class="brand-link">
         <img src='{% static "adminLTE/dist/img/AdminLTELogo.png" %}' alt="logo"
              class="brand-image img-circle elevation-3"
              style="opacity: .8">
@@ -17,7 +17,7 @@
                 <img src={{ request.user.unit.building.image.url }} class="img-circle-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="{% url "building_app_manager:home" %}" class="d-block">{{ request.user.unit.name }}</a>
+                <a href="{% url "dashboard_app:manager_dashboard" %}" class="d-block">{{ request.user.unit.name }}</a>
             </div>
         </div>
 
@@ -37,14 +37,14 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{% url 'building_app_manager:charge_list' %}"
+                            <a href="{% url 'charge_app:charge_list' %}"
                                class="nav-link {% if request.path == '/manager-panel/charge-list' %}active{% endif %}">
                                 <i class="fas fa-th nav-icon"></i>
                                 <p>لیست شارژها</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{% url 'building_app_manager:create_charge' %}"
+                            <a href="{% url 'charge_app:create_charge' %}"
                                class="nav-link {% if request.path == '/manager-panel/create-charge' %}active{% endif %}">
                                 <i class="far fa-edit nav-icon"></i>
                                 <p>ایجاد شارژ</p>
@@ -63,14 +63,14 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{% url 'building_app_manager:notification_list' %}"
+                            <a href="{% url 'notification_app:notification_list' %}"
                                class="nav-link {% if request.path == '/manager-panel/notification-list' %}active{% endif %}">
                                 <i class="fas fa-th nav-icon"></i>
                                 <p>لیست اعلانات</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{% url 'building_app_manager:create_notification' %}"
+                            <a href="{% url 'notification_app:create_notification' %}"
                                class="nav-link {% if request.path == '/manager-panel/create-notification' %}active{% endif %}">
                                 <i class="far fa-edit nav-icon"></i>
                                 <p>ایجاد اعلان</p>
@@ -89,14 +89,14 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{% url 'building_app_manager:payment_request_list' %}"
+                            <a href="{% url 'payment_request_app:payment_request_list' %}"
                                class="nav-link {% if request.path == '/manager-panel/payment-request-list' %}active{% endif %}">
                                 <i class="fas fa-th nav-icon"></i>
                                 <p>درخواست های پرداخت</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{% url 'building_app_manager:create_payment_request' %}"
+                            <a href="{% url 'payment_request_app:create_payment_request' %}"
                                class="nav-link {% if request.path == '/manager-panel/create-payment-request' %}active{% endif %}">
                                 <i class="far fa-edit nav-icon"></i>
                                 <p>درخواست پرداخت</p>
@@ -115,7 +115,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{% url 'building_app_manager:unit_list' %}"
+                            <a href="{% url 'building_app:unit_list' %}"
                                class="nav-link {% if request.path == '/manager-panel/unit-list' %}active{% endif %}">
                                 <i class="fas fa-th nav-icon"></i>
                                 <p>
@@ -126,7 +126,7 @@
                     </ul>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{% url 'building_app_manager:resign_manager' %}"
+                            <a href="{% url 'management_manager_app:resign_manager' %}"
                                class="nav-link {% if request.path == '/manager-panel/resign-manager' %}active{% endif %}">
                                 <i class="fas fa-th nav-icon"></i>
                                 <p>
@@ -137,7 +137,7 @@
                     </ul>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{% url 'building_app_manager:vip_service_list' %}"
+                            <a href="{% url 'vip_service_app:vip_service_list' %}"
                                class="nav-link {% if request.path == '/manager-panel/pricing' %}active{% endif %}">
                                 <i class="fas fa-th nav-icon"></i>
                                 <p>

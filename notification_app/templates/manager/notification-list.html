@@ -27,7 +27,7 @@
                             <tr>
                                 <td>{{ notification.title }}</td>
                                 <td>{{ notification.description|truncatewords:3|safe }}</td>
-                                <td><a href="{% url 'building_app_manager:update_notification' notification.pk %}"
+                                <td><a href="{% url 'notification_app:update_notification' notification.pk %}"
                                        class="btn btn-primary">ویرایش</a></td>
                             </tr>
                         {% endfor %}
