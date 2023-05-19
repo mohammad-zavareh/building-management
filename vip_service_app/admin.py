@@ -1,3 +1,11 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import VipService
+
+
+class VipServiceAdmin(admin.ModelAdmin):
+    list_display = ('name', 'price', 'time', 'max_unit')
+    prepopulated_fields = {'slug': ('name',)}
+
+
+admin.site.register(VipService, VipServiceAdmin)
