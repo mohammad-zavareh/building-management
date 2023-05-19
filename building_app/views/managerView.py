@@ -6,57 +6,17 @@ from django.urls import reverse_lazy
 
 from buildingManagement.mixins import (
     ManagerRequiredMixin,
-    ManagerAccessOwnerUnitMixin,
-    ManagerAccessOwnerChargeMixin,
     ManagerAccessOwnerNotificationMixin,
 )
 
 from building_app.models import (
     RequestPayment,
     Unit,
-    ServiceCharge,
-    ServiceChargeStatus,
-    Notification,
 )
 
 
 class ManagerPanel(LoginRequiredMixin, ManagerRequiredMixin, TemplateView):
     template_name = 'manager/home.html'
-
-
-# -----------------------------------------------------------------------------notification
-class NotificationList(LoginRequiredMixin, ManagerRequiredMixin, ListView):
-    model = Notification
-    template_name = 'manager/notification-list.html'
-    paginate_by = 10
-
-    def get_queryset(self):
-        building = self.request.user.unit.building
-        qs = super().get_queryset().filter(building=building)
-        return qs
-
-
-class CreateNotification(LoginRequiredMixin, ManagerRequiredMixin, CreateView):
-    model = Notification
-    template_name = 'manager/create-notification.html'
-    fields = ['title', 'description']
-    success_url = reverse_lazy('building_app_manager:notification_list')
-
-    def form_valid(self, form):
-        building = self.request.user.unit.building
-
-        self.object = form.save(commit=False)
-        self.object.building = building
-        self.object.save()
-
-        return super().form_valid(form)
-
-
-class UpdateNotification(LoginRequiredMixin, ManagerRequiredMixin, ManagerAccessOwnerNotificationMixin, UpdateView):
-    model = Notification
-    template_name = 'manager/update-notification.html'
-    fields = ['title', 'description']
-    success_url = reverse_lazy('building_app_manager:notification_list')
 
 
 # -----------------------------------------------------------------------------payment request

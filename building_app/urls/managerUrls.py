@@ -16,9 +16,6 @@ app_name = 'building_app_manager'
 urlpatterns = [
     path('/', ManagerPanel.as_view(), name='home'),
 
-    path('/notification-list', NotificationList.as_view(), name='notification_list'),
-    path('/create-notification', CreateNotification.as_view(), name='create_notification'),
-    path('/update-notification/<pk>', UpdateNotification.as_view(), name='update_notification'),
     path('/payment-request-list', PaymentRequestList.as_view(), name='payment_request_list'),
     path('/create-payment-request', CreatePaymentRequest.as_view(), name='create_payment_request'),
     path('/add-manager', AddManager.as_view(), name='add_manager'),
