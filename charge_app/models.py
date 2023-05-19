@@ -7,7 +7,7 @@ from django.utils import timezone
 
 from account_app.models import User
 from vip_service_app.models import VipService
-from building_management_app.models import Building,Unit
+from building_app.models import Building,Unit
 
 class Category(models.Model):
     title = models.CharField(max_length=30, verbose_name='عنوان')

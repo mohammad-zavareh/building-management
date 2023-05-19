@@ -26,4 +26,4 @@ class UpdateUnit(LoginRequiredMixin, ManagerRequiredMixin, ManagerAccessOwnerUni
     model = Unit
     fields = ['name', 'number_of_member']
     template_name = 'manager/update-unit.html'
-    success_url = reverse_lazy('building_management_app:unit_list')
+    success_url = reverse_lazy('building_app:unit_list')

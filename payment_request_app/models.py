@@ -2,7 +2,7 @@ from django.db import models
 
 from django.utils import timezone
 
-from building_management_app.models import Building
+from building_app.models import Building
 
 class RequestPayment(models.Model):
     building = models.ForeignKey(Building, on_delete=models.CASCADE, verbose_name='ساختمان')

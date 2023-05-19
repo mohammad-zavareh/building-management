@@ -1,6 +1,6 @@
 from django.db import models
 
-from building_management_app.models import Building
+from building_app.models import Building
 
 class Notification(models.Model):
     building = models.ForeignKey(Building, on_delete=models.CASCADE, verbose_name='برای ساختمان')

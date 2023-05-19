@@ -2,7 +2,7 @@ from django.urls import path
 
 from .views import UnitList, UpdateUnit
 
-app_name = 'building_management_app'
+app_name = 'building_app'
 
 urlpatterns = [
     path('/unit-list', UnitList.as_view(), name='unit_list'),

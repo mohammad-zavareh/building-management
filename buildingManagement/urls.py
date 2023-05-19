@@ -22,15 +22,14 @@ urlpatterns = [
     path('', include('general_app.urls')),
     path('', include('account_app.urls')),
 
-    path('manager-panel', include('building_app.urls.managerUrls')),
-    path('manager-panel', include('building_management_app.urls')),
+    path('manager-panel', include('building_app.urls')),
     path('manager-panel', include('vip_service_app.urls')),
     path('manager-panel', include('charge_app.urls')),
     path('manager-panel', include('notification_app.urls')),
     path('manager-panel', include('payment_request_app.urls')),
     path('manager-panel', include('management_manager_app.urls')),
 
-    path('resident-panel', include('building_app.urls.residentUrls')),
+    path('resident-panel', include('building_app.urls')),
 ]
 
 from django.conf import settings

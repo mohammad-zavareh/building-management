@@ -1,7 +1,7 @@
 from django.views.generic import View
 from django.shortcuts import render
 
-from building_management_app.models import Unit
+from building_app.models import Unit
 
 from buildingManagement.mixins import ManagerRequiredMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
