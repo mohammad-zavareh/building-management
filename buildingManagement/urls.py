@@ -27,6 +27,7 @@ urlpatterns = [
     path('manager-panel', include('vip_service_app.urls')),
     path('manager-panel', include('charge_app.urls')),
     path('manager-panel', include('notification_app.urls')),
+    path('manager-panel', include('payment_request_app.urls')),
 
     path('resident-panel', include('building_app.urls.residentUrls')),
 ]

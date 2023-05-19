@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'vip_service_app',
     'charge_app',
     'notification_app',
+    'payment_request_app',
 ]
 
 MIDDLEWARE = [
