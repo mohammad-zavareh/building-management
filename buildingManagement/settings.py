@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'setting_app',
     'building_management_app',
     'vip_service_app',
+    'charge_app',
 ]
 
 MIDDLEWARE = [

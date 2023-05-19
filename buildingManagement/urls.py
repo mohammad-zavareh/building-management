@@ -24,6 +24,8 @@ urlpatterns = [
 
     path('manager-panel', include('building_app.urls.managerUrls')),
     path('manager-panel', include('building_management_app.urls')),
+    path('manager-panel', include('vip_service_app.urls')),
+    path('manager-panel', include('charge_app.urls')),
 
     path('resident-panel', include('building_app.urls.residentUrls')),
 ]
