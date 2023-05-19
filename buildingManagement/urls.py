@@ -28,6 +28,7 @@ urlpatterns = [
     path('manager-panel', include('notification_app.urls')),
     path('manager-panel', include('payment_request_app.urls')),
     path('manager-panel', include('management_manager_app.urls')),
+    path('manager-panel', include('dashboard_app.urls')),
 
     path('resident-panel', include('building_app.urls')),
 ]
