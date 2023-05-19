@@ -189,15 +189,3 @@ class ResignManager(LoginRequiredMixin, ManagerRequiredMixin, View):
             message['tag'] = 'warning'
 
         return render(request, 'manager/partial/alert-message.html', message)
-
-
-# -----------------------------------------------------------------------------management
-
-class VipServiceList(LoginRequiredMixin, ManagerRequiredMixin, ListView):
-    model = VipService
-    template_name = 'manager/vip-service-list.html'
-
-
-class VipServiceDetail(LoginRequiredMixin, ManagerRequiredMixin, DetailView):
-    model = VipService
-    template_name = 'manager/vip-service-detail.html'

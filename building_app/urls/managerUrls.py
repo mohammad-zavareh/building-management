@@ -13,8 +13,6 @@ from building_app.views.managerView import (
     CreatePaymentRequest,
     AddManager,
     ResignManager,
-    VipServiceList,
-    VipServiceDetail,
 )
 
 app_name = 'building_app_manager'
@@ -33,6 +31,4 @@ urlpatterns = [
     path('/create-payment-request', CreatePaymentRequest.as_view(), name='create_payment_request'),
     path('/add-manager', AddManager.as_view(), name='add_manager'),
     path('/resign-manager', ResignManager.as_view(), name='resign_manager'),
-    path('/pricing', VipServiceList.as_view(), name='vip_service_list'),
-    path('/pricing/<slug>', VipServiceDetail.as_view(), name='vip_service_detail'),
 ]

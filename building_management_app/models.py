@@ -4,7 +4,7 @@ from django.utils.crypto import get_random_string
 from django.utils import timezone
 
 from account_app.models import User
-from building_app.models import VipService
+from vip_service_app.models import VipService
 
 class Building(models.Model):
     building_id = models.CharField(default=get_random_string(5),

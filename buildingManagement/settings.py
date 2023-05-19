@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'building_app',
     'setting_app',
     'building_management_app',
+    'vip_service_app',
 ]
 
 MIDDLEWARE = [
