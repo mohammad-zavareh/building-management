@@ -3,11 +3,10 @@ from django.db.models.signals import post_save
 
 from django.dispatch import receiver
 
-from django.utils.crypto import get_random_string
 from django.utils import timezone
 
 from account_app.models import User
-
+from building_management_app.models import Building,Unit
 
 class VipService(models.Model):
     name = models.CharField(max_length=50, verbose_name='نام')
@@ -22,45 +21,6 @@ class VipService(models.Model):
     class Meta:
         verbose_name = 'سرویس ویژه'
         verbose_name_plural = 'سرویس های ویژه'
-
-
-class Building(models.Model):
-    building_id = models.CharField(default=get_random_string(5),
-                                   max_length=5,
-                                   unique=True,
-                                   verbose_name='شناسه ساختمان'
-                                   )
-
-    name = models.CharField(max_length=20, verbose_name='نام')
-    image = models.ImageField(upload_to='building', verbose_name='تصویر')
-    rules = models.TextField(blank=True, null=True, verbose_name='قوانین')
-    credit = models.IntegerField(default=0, verbose_name='کیف پول')
-    vip_plan = models.ForeignKey(VipService, on_delete=models.CASCADE, verbose_name='اشتراک ویژه',
-                                 related_name='building',
-                                 blank=True, null=True)
-    vip_time = models.DateTimeField(default=timezone.now, verbose_name='تاریخ انقضا اشتراک')
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = 'ساختمان'
-        verbose_name_plural = 'ساختمان ها'
-
-    def is_vip(self):
-        if self.vip_time > timezone.now():
-            return True
-        elif self.vip_time < timezone.now():
-            return False
-        else:
-            return False
-
-    is_vip.boolean = True
-    is_vip.short_description = 'دارای اشتراک'
-
-    def until_vip_time(self):
-        until_time = self.vip_time - timezone.now()
-        return until_time.days
 
 
 class RequestPayment(models.Model):
@@ -90,22 +50,6 @@ class Notification(models.Model):
     class Meta:
         verbose_name = 'اعلان'
         verbose_name_plural = 'اعلانات'
-
-
-class Unit(models.Model):
-    building = models.ForeignKey(Building, on_delete=models.CASCADE, verbose_name='برای ساختمان')
-    resident = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='ساکن')
-
-    name = models.CharField(max_length=50, verbose_name='نام')
-    is_manager = models.BooleanField(default=False, verbose_name='مدیر ساختمان')
-    number_of_member = models.IntegerField(default=1, verbose_name='تعداد ساکنین')
-
-    def __str__(self):
-        return self.name
-
-    class Meta:
-        verbose_name = 'واحد'
-        verbose_name_plural = 'واحد ها'
 
 
 class Category(models.Model):

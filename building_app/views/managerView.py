@@ -4,7 +4,7 @@ from django.views.generic import TemplateView, ListView, CreateView, UpdateView,
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
-from building_app.mixins import (
+from buildingManagement.mixins import (
     ManagerRequiredMixin,
     ManagerAccessOwnerUnitMixin,
     ManagerAccessOwnerChargeMixin,
@@ -23,33 +23,6 @@ from building_app.models import (
 
 class ManagerPanel(LoginRequiredMixin, ManagerRequiredMixin, TemplateView):
     template_name = 'manager/home.html'
-
-
-# -----------------------------------------------------------------------------unit
-
-class UnitList(LoginRequiredMixin, ManagerRequiredMixin, ListView):
-    template_name = 'manager/unit-list.html'
-    model = Unit
-    paginate_by = 10
-
-    def get_queryset(self):
-        building = self.request.user.unit.building
-        queryset = Unit.objects.filter(building=building).order_by('-is_manager')
-        return queryset
-
-
-class UpdateUnit(LoginRequiredMixin, ManagerRequiredMixin, ManagerAccessOwnerUnitMixin, UpdateView):
-    model = Unit
-    fields = ['name', 'number_of_member']
-    template_name = 'manager/update-unit.html'
-    success_url = reverse_lazy('building_app_manager:unit_list')
-
-    # def get_queryset(self):
-    #     if self.kwargs['pk'] == '2':
-    #         return super().get_queryset()
-    #     else:
-    #         raise Http404('شما به این صفحه دسترسی ندارید')
-
 
 # -----------------------------------------------------------------------------charge
 

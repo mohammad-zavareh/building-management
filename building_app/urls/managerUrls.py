@@ -2,8 +2,6 @@ from django.urls import path
 
 from building_app.views.managerView import (
     ManagerPanel,
-    UnitList,
-    UpdateUnit,
     ChargeList,
     CreateCharge,
     UpdateCharge,
@@ -24,8 +22,6 @@ app_name = 'building_app_manager'
 urlpatterns = [
     path('/', ManagerPanel.as_view(), name='home'),
 
-    path('/unit-list', UnitList.as_view(), name='unit_list'),
-    path('/update-unit/<pk>', UpdateUnit.as_view(), name='update_unit'),
     path('/charge-list', ChargeList.as_view(), name='charge_list'),
     path('/create-charge', CreateCharge.as_view(), name='create_charge'),
     path('/charge-status/<pk>', ChargeStatus.as_view(), name='charge_status'),

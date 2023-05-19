@@ -1,0 +1,130 @@
+{% extends 'manager/base-manager.html' %}
+{% load static %}
+
+{% block browser_title %}لیست واحدها{% endblock %}
+{% block page_title %}لیست واحدها{% endblock %}
+
+
+{% block content %}
+    {% if messages %}  <!-- for success mixin in cbv -->
+        {% for message in messages %}
+            <div class="text-center alert alert-{{ message.tag }}">
+                {{ message|safe }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div id="alert"></div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title float-left">لیست واحدها</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table class="table table-bordered table-hover dataTable">
+                        <thead>
+                        <tr>
+                            <th>نام و نام خانوادگی</th>
+                            <th>شماره همراه</th>
+                            <th>واحد</th>
+                            <th>تعداد ساکنین</th>
+                            <th>ویرایش</th>
+                            <th>ارتقا</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <form method="post">
+                            {% csrf_token %}
+                            {% for unit in object_list %}
+                                <tr>
+                                    <td>
+                                        {% if unit.resident.get_full_name %}
+                                            <p id="is_manager_badge_{{ unit.pk }}">
+                                                {{ unit.resident.get_full_name }}
+                                                {% if unit.is_manager %}
+                                                    <span class="right badge badge-primary">مدیر</span>
+                                                {% endif %}
+                                            </p>
+
+                                        {% else %}
+                                            <p id="is_manager_badge_{{ unit.pk }}">
+                                                ثبت نشده
+                                                {% if unit.is_manager %}
+                                                    <span class="right badge badge-primary">مدیر</span>
+                                                {% endif %}
+                                            </p>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ unit.resident.phone_number }}</td>
+                                    <td>{{ unit.name }}</td>
+                                    <td>{{ unit.number_of_member }}</td>
+                                    <td>
+                                        <a href="{% url 'building_app_manager:update_unit' unit.pk %}"
+                                           class="btn btn-primary">ویرایش</a>
+                                    </td>
+
+                                    <td>
+                                        {% if unit.is_manager %}
+                                            <button class="btn btn-success" disabled>ارتقا به مدیر</button>
+                                        {% else %}
+                                            <div id="add_manager_id_{{ unit.pk }}">
+                                                <a class="btn btn-success text-white"
+                                                   onclick="addManager({{ unit.pk }})">ارتقا به
+                                                    مدیر</a>
+                                            </div>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </form>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>نام و نام خانوادگی</th>
+                            <th>شماره همراه</th>
+                            <th>واحد</th>
+                            <th>تعداد ساکنین</th>
+                            <th>ویرایش</th>
+                            <th>ارتقا</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-7">
+                    <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                        <ul class="pagination">
+
+                            {% if page_obj.has_previous %}
+                            <li class="paginate_button page-item previous">
+                                <a href="?page={{ page_obj.previous_page_number }}" class="page-link">قبلی</a>
+                            </li>
+                            {% endif %}
+
+                            {% for page in paginator.page_range %}
+                            <li class="paginate_button page-item {% if page == page_obj.number %}active{% endif %}">
+                                <a href="?page={{ page }}" class="page-link">{{ page }}</a></li>
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                            <li class="paginate_button page-item next">
+                                <a href="?page={{ page_obj.next_page_number }}" class="page-link">بعدی</a>
+                            </li>
+                            {% endif %}
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js_file %}
+    <script src={% static "adminLTE/dist/js/custom.js" %}></script>
+{% endblock %}

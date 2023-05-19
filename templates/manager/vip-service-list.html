@@ -1,0 +1,93 @@
+{% extends 'manager/base/base-manager.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block browser_title %}سرویس ویژه{% endblock %}
+{% block page_title %}سرویس های ویژه{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title float-left">لیست سرویس های ویژه</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <table class="table table-bordered table-hover dataTable">
+                        <thead>
+                        <tr>
+                            <th>نام</th>
+                            <th>قیمت</th>
+                            <th>زمان</th>
+                            <th>حداکثر تعداد واحد</th>
+                            <th>خرید</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for vip in object_list %}
+                            <tr>
+                                <td>{{ vip.name }}</td>
+                                <td>{{ vip.price|intcomma:False }}</td>
+                                <td>{{ vip.time }}</td>
+                                <td>{{ vip.max_unit }}</td>
+                                <td><a href="{% url 'building_app_manager:vip_service_detail' vip.slug %}"
+                                       class="btn btn-primary btn-block">خرید</a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <th>نام</th>
+                            <th>قیمت</th>
+                            <th>زمان</th>
+                            <th>حداکثر تعداد واحد</th>
+                            <th>خرید</th>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 col-md-7">
+                    <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                        <ul class="pagination">
+                            <li class="paginate_button page-item previous disabled" id="example2_previous">
+                                <a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0"
+                                   class="page-link">قبلی</a></li>
+                            <li class="paginate_button page-item active"><a href="#"
+                                                                            aria-controls="example2"
+                                                                            data-dt-idx="1" tabindex="0"
+                                                                            class="page-link">1</a></li>
+                            <li class="paginate_button page-item "><a href="#" aria-controls="example2"
+                                                                      data-dt-idx="2" tabindex="0"
+                                                                      class="page-link">2</a></li>
+                            <li class="paginate_button page-item "><a href="#" aria-controls="example2"
+                                                                      data-dt-idx="3" tabindex="0"
+                                                                      class="page-link">3</a></li>
+                            <li class="paginate_button page-item "><a href="#" aria-controls="example2"
+                                                                      data-dt-idx="4" tabindex="0"
+                                                                      class="page-link">4</a></li>
+                            <li class="paginate_button page-item "><a href="#" aria-controls="example2"
+                                                                      data-dt-idx="5" tabindex="0"
+                                                                      class="page-link">5</a></li>
+                            <li class="paginate_button page-item "><a href="#" aria-controls="example2"
+                                                                      data-dt-idx="6" tabindex="0"
+                                                                      class="page-link">6</a></li>
+                            <li class="paginate_button page-item next" id="example2_next"><a href="#"
+                                                                                             aria-controls="example2"
+                                                                                             data-dt-idx="7"
+                                                                                             tabindex="0"
+                                                                                             class="page-link">بعدی</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js_file %}
+    <script src={% static "adminLTE/dist/js/custom.js" %}></script>
+{% endblock %}
