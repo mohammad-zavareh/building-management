@@ -85,9 +85,9 @@ def login_page_otp(request):
 
                     unit = Unit.objects.filter(resident__phone_number=phone_number).first()
                     if unit.is_manager:
-                        return redirect('building_app_manager:home')
+                        return redirect('dashboard_app:manager_dashboard')
                     else:
-                        return redirect('building_app_resident:home')
+                        return redirect('dashboard_app:resident_dashboard')
                 else:
                     return redirect("account_app:choice_user_type")
             else:
@@ -132,7 +132,7 @@ def manager_register_page(request):
             unit.save()
 
             login(request, user)
-            return redirect('building_app_manager:home')
+            return redirect('dashboard_app:manager_dashboard')
     else:
         context = {
             'register_form': RegisterForm(prefix='register_form'),
@@ -167,7 +167,7 @@ def resident_register_page(request):
             unit.save()
 
             login(request, user)
-            return redirect('building_app_resident:home')
+            return redirect('dashboard_app:resident_dashboard')
     else:
         context = {
             'register_form': RegisterForm(prefix='register_form'),
