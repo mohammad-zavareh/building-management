@@ -9,7 +9,7 @@ from buildingManagement.mixins import (
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
-from .models import Notification
+from notification_app.models import Notification
 
 class NotificationList(LoginRequiredMixin, ManagerRequiredMixin, ListView):
     model = Notification
@@ -43,4 +43,3 @@ class UpdateNotification(LoginRequiredMixin, ManagerRequiredMixin, ManagerAccess
     template_name = 'manager/update-notification.html'
     fields = ['title', 'description']
     success_url = reverse_lazy('notification_app:notification_list')
-

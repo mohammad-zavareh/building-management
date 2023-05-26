@@ -19,18 +19,18 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
 
+    path('', include('dashboard_app.urls')),
     path('', include('general_app.urls')),
     path('', include('account_app.urls')),
 
     path('manager-panel', include('building_app.urls')),
     path('manager-panel', include('vip_service_app.urls')),
     path('manager-panel', include('charge_app.urls')),
-    path('manager-panel', include('notification_app.urls')),
+    path('manager-panel', include('notification_app.urls.manager_urls')),
     path('manager-panel', include('payment_request_app.urls')),
     path('manager-panel', include('management_manager_app.urls')),
-    path('', include('dashboard_app.urls')),
 
-    path('resident-panel', include('building_app.urls')),
+#    path('resident-panel', include('notification_app.urls.resident_urls')),
 ]
 
 from django.conf import settings
@@ -38,4 +38,4 @@ from django.conf.urls.static import static
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

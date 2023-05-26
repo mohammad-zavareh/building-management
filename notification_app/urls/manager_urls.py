@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import (
+from notification_app.views.manager_views import (
     NotificationList,
     CreateNotification,
     UpdateNotification,
