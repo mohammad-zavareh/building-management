@@ -1,11 +1,27 @@
 {% extends 'resident/base-resident.html' %}
 {% load humanize %}
 
+
 {% block browser_title %}اعلانات{% endblock %}
 {% block page_title %}اعلانات{% endblock %}
 
 
 {% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 offset-5">
+                <div class="btn-group">
+                    <a href="{% url 'notification_app_resident:notification_filter' 'seen' %}" type="button"
+                       class="btn btn-success">دیده شده</a>
+                    <a href="{% url 'notification_app_resident:notification_list' %}" type="button"
+                       class="btn btn-success active">همه</a>
+                    <a href="{% url 'notification_app_resident:notification_filter' 'unseen' %}" type="button"
+                       class="btn btn-success">دیده نشده</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -24,7 +40,12 @@
                         <tbody>
                         {% for notification in object_list %}
                             <tr>
-                                <td>{{ notification.title }}</td>
+                                <td>
+                                    {{ notification.title }}
+                                    {% if request.user.unit not in notification.hits.all %}
+                                        <span class="badge bg-danger">خوانده نشده</span>
+                                    {% endif %}
+                                </td>
                                 <td>{{ notification.description|truncatewords:3|safe }}</td>
                             </tr>
                         {% endfor %}
@@ -44,20 +65,20 @@
                         <ul class="pagination">
 
                             {% if page_obj.has_previous %}
-                            <li class="paginate_button page-item previous">
-                                <a href="?page={{ page_obj.previous_page_number }}" class="page-link">قبلی</a>
-                            </li>
+                                <li class="paginate_button page-item previous">
+                                    <a href="?page={{ page_obj.previous_page_number }}" class="page-link">قبلی</a>
+                                </li>
                             {% endif %}
 
                             {% for page in paginator.page_range %}
-                            <li class="paginate_button page-item {% if page == page_obj.number %}active{% endif %}">
-                                <a href="?page={{ page }}" class="page-link">{{ page }}</a></li>
+                                <li class="paginate_button page-item {% if page == page_obj.number %}active{% endif %}">
+                                    <a href="?page={{ page }}" class="page-link">{{ page }}</a></li>
                             {% endfor %}
 
                             {% if page_obj.has_next %}
-                            <li class="paginate_button page-item next">
-                                <a href="?page={{ page_obj.next_page_number }}" class="page-link">بعدی</a>
-                            </li>
+                                <li class="paginate_button page-item next">
+                                    <a href="?page={{ page_obj.next_page_number }}" class="page-link">بعدی</a>
+                                </li>
                             {% endif %}
 
                         </ul>

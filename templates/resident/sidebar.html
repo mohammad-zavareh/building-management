@@ -27,7 +27,7 @@
                 data-accordion="false">
                 <li class="nav-item">
                     <a href="{% url 'notification_app_resident:notification_list' %}"
-                       class="nav-link {% if request.path == '/resident-panel/notification-list' %}active{% endif %}">
+                       class="nav-link {% if '/resident-panel/notification-list' in request.path %}active{% endif %}">
                         <i class="fas fa-envelope nav-icon"></i>
                         <p>لیست اعلانات</p>
                     </a>
