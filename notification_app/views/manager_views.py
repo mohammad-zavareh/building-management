@@ -18,7 +18,7 @@ class NotificationList(LoginRequiredMixin, ManagerRequiredMixin, ListView):
 
     def get_queryset(self):
         building = self.request.user.unit.building
-        qs = super().get_queryset().filter(building=building)
+        qs = super().get_queryset().filter(building=building).order_by('-created')
         return qs
 
 
