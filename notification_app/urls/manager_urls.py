@@ -6,7 +6,7 @@ from notification_app.views.manager_views import (
     UpdateNotification,
 )
 
-app_name = 'notification_app'
+app_name = 'notification_app_manager'
 
 urlpatterns = [
     path('/notification-list', NotificationList.as_view(), name='notification_list'),

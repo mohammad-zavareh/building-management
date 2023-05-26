@@ -63,14 +63,14 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{% url 'notification_app:notification_list' %}"
+                            <a href="{% url 'notification_app_manager:notification_list' %}"
                                class="nav-link {% if request.path == '/manager-panel/notification-list' %}active{% endif %}">
                                 <i class="fas fa-th nav-icon"></i>
                                 <p>لیست اعلانات</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{% url 'notification_app:create_notification' %}"
+                            <a href="{% url 'notification_app_manager:create_notification' %}"
                                class="nav-link {% if request.path == '/manager-panel/create-notification' %}active{% endif %}">
                                 <i class="far fa-edit nav-icon"></i>
                                 <p>ایجاد اعلان</p>

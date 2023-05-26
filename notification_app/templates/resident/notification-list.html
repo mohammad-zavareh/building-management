@@ -1,4 +1,4 @@
-{% extends 'manager/base-manager.html' %}
+{% extends 'resident/base-resident.html' %}
 {% load humanize %}
 
 {% block browser_title %}اعلانات{% endblock %}
@@ -19,7 +19,6 @@
                         <tr>
                             <th>عنوان</th>
                             <th>توضیحات</th>
-                            <th>ویرایش</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -27,8 +26,6 @@
                             <tr>
                                 <td>{{ notification.title }}</td>
                                 <td>{{ notification.description|truncatewords:3|safe }}</td>
-                                <td><a href="{% url 'notification_app_manager:update_notification' notification.pk %}"
-                                       class="btn btn-primary">ویرایش</a></td>
                             </tr>
                         {% endfor %}
                         </tbody>
@@ -36,7 +33,6 @@
                         <tr>
                             <th>عنوان</th>
                             <th>توضیحات</th>
-                            <th>ویرایش</th>
                         </tr>
                         </tfoot>
                     </table>
