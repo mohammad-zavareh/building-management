@@ -1,0 +1,40 @@
+{% load static %}
+
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="{% url "dashboard_app:manager_dashboard" %}" class="brand-link">
+        <img src='{% static "adminLTE/dist/img/AdminLTELogo.png" %}' alt="logo"
+             class="brand-image img-circle elevation-3"
+             style="opacity: .8">
+        <span class="brand-text font-weight-light">پنل مدیریت</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user panel (optional) -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <img src={{ request.user.unit.building.image.url }} class="img-circle-2" alt="User Image">
+            </div>
+            <div class="info">
+                <a href="{% url "dashboard_app:manager_dashboard" %}" class="d-block">{{ request.user.unit.name }}</a>
+            </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-sidebar flex-column" data-widget="treeview" role="menu"
+                data-accordion="false">
+                <li class="nav-item">
+                    <a href="{% url 'notification_app:notification_list' %}"
+                       class="nav-link {% if request.path == '/resident-panel/notification-list' %}active{% endif %}">
+                        <i class="fas fa-envelope nav-icon"></i>
+                        <p>لیست اعلانات</p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>
