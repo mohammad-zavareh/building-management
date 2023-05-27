@@ -2,6 +2,7 @@ from django.views.generic import ListView, DetailView
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from buildingManagement.mixins import AccessOwnerNotificationMixin,SaveVisitMixin
 from notification_app.models import Notification
 
 
@@ -14,6 +15,11 @@ class NotificationList(LoginRequiredMixin, ListView):
         building = self.request.user.unit.building
         qs = super().get_queryset().filter(building=building).order_by('-created')
         return qs
+
+class NotificationDetail(LoginRequiredMixin,AccessOwnerNotificationMixin,SaveVisitMixin, DetailView):
+    model = Notification
+    template_name = 'resident/notification-detail.html'
+
 
 
 class NotificationFilter(LoginRequiredMixin, ListView):

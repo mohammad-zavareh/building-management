@@ -1,0 +1,13 @@
+{% extends 'resident/base-resident.html' %}
+{% load humanize %}
+
+
+{% block browser_title %}اعلانات{% endblock %}
+{% block page_title %}اعلانات{% endblock %}
+
+
+{% block content %}
+    {{ object.title }}
+    <br>
+    {{ object.description|safe }}
+{% endblock %}

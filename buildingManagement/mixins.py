@@ -1,4 +1,5 @@
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 
 from building_app.models import Unit
 from notification_app.models import Notification
@@ -55,3 +56,17 @@ class AccessOwnerNotificationMixin():
             return super().dispatch(request, *args, **kwargs)
         else:
             raise Http404('شما به این صفحه دسترسی ندارید!')
+
+class SaveVisitMixin():
+    def dispatch(self, request, *args, **kwargs):
+        unit = request.user.unit
+        notification_pk = kwargs['pk']
+        notification = get_object_or_404(Notification, pk=notification_pk)
+
+        print(notification.hits.all())
+
+        if unit not in notification.hits.all():
+            notification.hits.add(unit)
+            notification.save()
+
+        return super().dispatch(request, *args, **kwargs)

@@ -19,7 +19,7 @@
                     <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
                         <div class="container">
                             <div class="row">
-                                <div class="col-md-4 offset-5">
+                                <div class="col-md-12 text-center">
                                     <div class="btn-group">
                                         <a href="{% url 'notification_app_resident:notification_filter' 'seen' %}"
                                            type="button"
@@ -39,26 +39,31 @@
                 <div class="table-responsive mailbox-messages">
                     <table class="table table-hover table-striped">
                         <tbody>
-                        {% for notification in object_list %}
-                            <tr>
-                                {% if request.user.unit not in notification.hits.all %}
-                                    <td class="mailbox-star"><a><i class="fas fa-circle text-success"></i></a>
+                        {% if object_list %}
+                            {% for notification in object_list %}
+                                <tr>
+                                    {% if request.user.unit not in notification.hits.all %}
+                                        <td class="mailbox-star"><a><i class="fas fa-circle text-warning"></i></a>
+                                        </td>
+                                    {% else %}
+                                        <td class="mailbox-star"><a><i class="fas fa-circle text-success"></i></a>
+                                        </td>
+                                    {% endif %}
+
+                                    <td class="mailbox-name"><a
+                                            href="{% url 'notification_app_resident:notification_detail' notification.pk %}"><b>{{ notification.title }}</b></a>
                                     </td>
-                                {% else %}
-                                    <td class="mailbox-star"><a><i class="fas fa-circle text-warning"></i></a>
+
+                                    <td class="mailbox-subject">
+                                        <b>{{ notification.description|truncatewords:5|safe }}</b>
                                     </td>
-                                {% endif %}
 
-                                <td class="mailbox-name"><a
-                                        href="{% url 'notification_app_resident:notification_detail' notification.pk %}"><b>{{ notification.title }}</b></a>
-                                </td>
-
-                                <td class="mailbox-subject"><b>{{ notification.description|truncatewords:5|safe }}</b>
-                                </td>
-
-                                <td class="mailbox-date"><b>{{ notification.created|timesince }} پیش</b></td>
-                            </tr>
-                        {% endfor %}
+                                    <td class="mailbox-date"><b>{{ notification.created|timesince }} پیش</b></td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <td><b>اعلانی در این بخش وجود ندارد</b></td>
+                        {% endif %}
                         </tbody>
                     </table>
                     <!-- /.table -->
