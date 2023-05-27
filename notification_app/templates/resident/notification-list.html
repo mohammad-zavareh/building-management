@@ -7,84 +7,92 @@
 
 
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 offset-5">
-                <div class="btn-group">
-                    <a href="{% url 'notification_app_resident:notification_filter' 'seen' %}" type="button"
-                       class="btn btn-success">دیده شده</a>
-                    <a href="{% url 'notification_app_resident:notification_list' %}" type="button"
-                       class="btn btn-success active">همه</a>
-                    <a href="{% url 'notification_app_resident:notification_filter' 'unseen' %}" type="button"
-                       class="btn btn-success">دیده نشده</a>
-                </div>
+    <div class="col-md-12">
+        <div class="card card-primary card-outline">
+            <div class="card-header">
+                <h3 class="card-title float-left"><b>اعلانات</b></h3>
             </div>
-        </div>
-    </div>
-    <br>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title float-left">لیست اعلانات</h3>
+            <!-- /.card-header -->
+            <div class="card-body p-0">
+                <div class="mailbox-controls">
+                    <!-- Check all button -->
+                    <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-4 offset-5">
+                                    <div class="btn-group">
+                                        <a href="{% url 'notification_app_resident:notification_filter' 'seen' %}"
+                                           type="button"
+                                           class="btn btn-primary">دیده شده</a>
+                                        <a href="{% url 'notification_app_resident:notification_list' %}" type="button"
+                                           class="btn btn-primary active">همه</a>
+                                        <a href="{% url 'notification_app_resident:notification_filter' 'unseen' %}"
+                                           type="button"
+                                           class="btn btn-primary">دیده نشده</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.float-right -->
                 </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <table class="table table-bordered table-hover dataTable">
-                        <thead>
-                        <tr>
-                            <th>عنوان</th>
-                            <th>توضیحات</th>
-                        </tr>
-                        </thead>
+                <div class="table-responsive mailbox-messages">
+                    <table class="table table-hover table-striped">
                         <tbody>
                         {% for notification in object_list %}
                             <tr>
-                                <td>
-                                    {{ notification.title }}
-                                    {% if request.user.unit not in notification.hits.all %}
-                                        <span class="badge bg-danger">خوانده نشده</span>
-                                    {% endif %}
+                                {% if request.user.unit not in notification.hits.all %}
+                                    <td class="mailbox-star"><a><i class="fas fa-circle text-success"></i></a>
+                                    </td>
+                                {% else %}
+                                    <td class="mailbox-star"><a><i class="fas fa-circle text-warning"></i></a>
+                                    </td>
+                                {% endif %}
+
+                                <td class="mailbox-name"><a
+                                        href="{% url 'notification_app_resident:notification_detail' notification.pk %}"><b>{{ notification.title }}</b></a>
                                 </td>
-                                <td>{{ notification.description|truncatewords:3|safe }}</td>
+
+                                <td class="mailbox-subject"><b>{{ notification.description|truncatewords:5|safe }}</b>
+                                </td>
+
+                                <td class="mailbox-date"><b>{{ notification.created|timesince }} پیش</b></td>
                             </tr>
                         {% endfor %}
                         </tbody>
-                        <tfoot>
-                        <tr>
-                            <th>عنوان</th>
-                            <th>توضیحات</th>
-                        </tr>
-                        </tfoot>
                     </table>
+                    <!-- /.table -->
                 </div>
+                <!-- /.mail-box-messages -->
             </div>
-            <div class="row">
-                <div class="col-sm-12 col-md-7">
-                    <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
-                        <ul class="pagination">
-
-                            {% if page_obj.has_previous %}
-                                <li class="paginate_button page-item previous">
-                                    <a href="?page={{ page_obj.previous_page_number }}" class="page-link">قبلی</a>
-                                </li>
-                            {% endif %}
-
-                            {% for page in paginator.page_range %}
-                                <li class="paginate_button page-item {% if page == page_obj.number %}active{% endif %}">
-                                    <a href="?page={{ page }}" class="page-link">{{ page }}</a></li>
-                            {% endfor %}
-
-                            {% if page_obj.has_next %}
-                                <li class="paginate_button page-item next">
-                                    <a href="?page={{ page_obj.next_page_number }}" class="page-link">بعدی</a>
-                                </li>
-                            {% endif %}
-
-                        </ul>
-                    </div>
+            <!-- /.card-body -->
+            <div class="card-footer p-0">
+                <div class="mailbox-controls">
+                    <br>
                 </div>
             </div>
         </div>
+        <!-- /.card -->
+        <div class="dataTables_paginate paging_simple_numbers" id="example2_paginate">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li class="paginate_button page-item previous">
+                        <a href="?page={{ page_obj.previous_page_number }}" class="page-link">قبلی</a>
+                    </li>
+                {% endif %}
+
+                {% for page in paginator.page_range %}
+                    <li class="paginate_button page-item {% if page == page_obj.number %}active{% endif %}">
+                        <a href="?page={{ page }}" class="page-link">{{ page }}</a></li>
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li class="paginate_button page-item next">
+                        <a href="?page={{ page_obj.next_page_number }}" class="page-link">بعدی</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
+
 {% endblock %}
