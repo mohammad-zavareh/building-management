@@ -3,7 +3,7 @@ from django.views.generic import ListView,UpdateView,CreateView
 
 from buildingManagement.mixins import (
     ManagerRequiredMixin,
-    ManagerAccessOwnerNotificationMixin
+    AccessOwnerNotificationMixin
 )
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -26,7 +26,7 @@ class CreateNotification(LoginRequiredMixin, ManagerRequiredMixin, CreateView):
     model = Notification
     template_name = 'manager/create-notification.html'
     fields = ['title', 'description']
-    success_url = reverse_lazy('notification_app:notification_list')
+    success_url = reverse_lazy('notification_app_manager:notification_list')
 
     def form_valid(self, form):
         building = self.request.user.unit.building
@@ -38,8 +38,8 @@ class CreateNotification(LoginRequiredMixin, ManagerRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class UpdateNotification(LoginRequiredMixin, ManagerRequiredMixin, ManagerAccessOwnerNotificationMixin, UpdateView):
+class UpdateNotification(LoginRequiredMixin, ManagerRequiredMixin, AccessOwnerNotificationMixin, UpdateView):
     model = Notification
     template_name = 'manager/update-notification.html'
     fields = ['title', 'description']
-    success_url = reverse_lazy('notification_app:notification_list')
+    success_url = reverse_lazy('notification_app_manager:notification_list')

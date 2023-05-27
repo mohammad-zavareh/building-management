@@ -45,13 +45,13 @@ class ManagerAccessOwnerChargeMixin():
             raise Http404('شما به این صفحه دسترسی ندارید!')
 
 
-class ManagerAccessOwnerNotificationMixin():
+class AccessOwnerNotificationMixin():
     def dispatch(self, request, *args, **kwargs):
         building = request.user.unit.building
         pk_notification = Notification.objects.filter(building=building).values('pk')  # returned a list of dictionaries
         pk_list = convert_to_list(pk_notification)
 
-        if kwargs['pk'] in pk_list:
+        if str(kwargs['pk']) in pk_list:
             return super().dispatch(request, *args, **kwargs)
         else:
             raise Http404('شما به این صفحه دسترسی ندارید!')
