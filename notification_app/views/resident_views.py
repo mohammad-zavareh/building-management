@@ -34,9 +34,9 @@ class NotificationFilter(LoginRequiredMixin, ListView):
         filter = self.kwargs['filter']
 
         if filter == 'seen':
-            qs = Notification.objects.filter(Q(building_id=building),Q(hits=unit)) # notification seen by unit
+            qs = Notification.objects.filter(Q(building_id=building),Q(hits=unit)).order_by('-created') # notification seen by unit
         elif filter == 'unseen':
-            qs = Notification.objects.filter(Q(building_id=building),~Q(hits=unit)) # notification unseen by unit
+            qs = Notification.objects.filter(Q(building_id=building),~Q(hits=unit)).order_by('-created') # notification unseen by unit
         else:
             qs = Notification.objects.filter(building_id=building).order_by('-created') # all notification
 

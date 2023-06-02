@@ -59,7 +59,6 @@ class Otp(models.Model):
         time_to_expire = 1
         created_time = self.created.replace(tzinfo=None)
 
-        print(created_time)
         expire_time = created_time + timedelta(minutes=time_to_expire)
 
         now = datetime.now()
