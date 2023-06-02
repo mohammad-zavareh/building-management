@@ -145,3 +145,6 @@ AUTH_USER_MODEL = 'account_app.User'
 LOGIN_URL = 'account_app:login_page'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_COOKIE_AGE = 604800 # one week in secound
