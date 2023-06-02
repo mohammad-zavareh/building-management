@@ -49,23 +49,13 @@ class ServiceCharge(models.Model):  # divide_members   divide_units
 
 
 class ServiceChargeStatus(models.Model):
-    payment_type_choice = [
-        ('online', 'آنلاین'),
-        ('cash', 'نقدی')
-    ]
-
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE, verbose_name='واحد')
     service_charge = models.ForeignKey(ServiceCharge, on_delete=models.CASCADE, verbose_name='شارژ خدمات')
 
     amount = models.IntegerField(verbose_name='مبلغ قابل پرداخت واحد')
     is_paid = models.BooleanField(default=False, verbose_name='پرداخت شده/نشده')
     pay_time = models.DateTimeField(blank=True, null=True, verbose_name='تاریخ پرداخت')
-    payment_type = models.CharField(max_length=10,
-                                    choices=payment_type_choice,
-                                    blank=True,
-                                    null=True,
-                                    verbose_name='نوع پرداخت'
-                                    )
+
 
     def __str__(self):
         return f'{self.service_charge} => {self.unit}'

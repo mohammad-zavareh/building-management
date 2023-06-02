@@ -37,14 +37,14 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="{% url 'charge_app:charge_list' %}"
+                            <a href="{% url 'charge_app_manager:charge_list' %}"
                                class="nav-link {% if request.path == '/manager-panel/charge-list' %}active{% endif %}">
                                 <i class="fas fa-th nav-icon"></i>
                                 <p>لیست شارژها</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{% url 'charge_app:create_charge' %}"
+                            <a href="{% url 'charge_app_manager:create_charge' %}"
                                class="nav-link {% if request.path == '/manager-panel/create-charge' %}active{% endif %}">
                                 <i class="far fa-edit nav-icon"></i>
                                 <p>ایجاد شارژ</p>

@@ -11,7 +11,7 @@ class ServiceChargeAdmin(admin.ModelAdmin):
 
 
 class ServiceChargeStatusAdmin(admin.ModelAdmin):
-    list_display = ('unit', 'service_charge', 'is_paid', 'payment_type_choice')
+    list_display = ('unit', 'service_charge', 'is_paid')
     list_filter = ('unit', 'service_charge', 'is_paid')
     search_fields = ('unit.name', 'service_charge.title')
 
