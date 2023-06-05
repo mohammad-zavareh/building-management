@@ -2,10 +2,11 @@ from django.http import Http404
 from django.utils import timezone
 from django.views.generic import ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404, render, redirect
 
-from charge_app.models import ServiceCharge, ServiceChargeStatus
+from charge_app.models import ServiceChargeStatus
 from building_app.models import Building
 
 
@@ -19,6 +20,7 @@ class ChargeList(LoginRequiredMixin, ListView):
         return qs
 
 
+@login_required
 def payment_charge(request, *args, **kwargs):  # send message function in zarinpal
     unit = request.user.unit
     charge_status_pk = kwargs.get('charge_status_pk')
@@ -33,6 +35,7 @@ def payment_charge(request, *args, **kwargs):  # send message function in zarinp
     raise Http404()
 
 
+@login_required
 def payment_charge_verify(request, *args, **kwargs):
     # if result.status == 100:
     charge_status_pk = kwargs.get('charge_status_pk')
@@ -48,6 +51,7 @@ def payment_charge_verify(request, *args, **kwargs):
     building = request.user.unit.building
     building = get_object_or_404(Building, id=building.id)
     building.credit += amount
+    building.save()
 
     context = {'status': 100}
     return render(request, 'resident/payment-verify.html', context)

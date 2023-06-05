@@ -8,12 +8,6 @@
             <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="#" class="nav-link">اعتبار: {{ request.user.unit.building.credit|intcomma:False }}</a>
-        </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <a href="{% url 'dashboard_app:resident_dashboard' %}" class="nav-link">ورود به پنل ساکنین</a>
-        </li>
-        <li class="nav-item d-none d-sm-inline-block">
             {% if request.user.unit.building.is_vip %}
                 <a class="nav-link">تا {{ request.user.unit.building.until_vip_time }} روز دیگر ویژه هستید</a>
             {% else %}

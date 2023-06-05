@@ -1,3 +1,5 @@
+from random import randint
+from datetime import datetime
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
@@ -14,9 +16,6 @@ from .forms import (
 
 from building_app.models import Unit, Building
 
-from random import randint
-from datetime import datetime
-from django.utils import timezone
 
 def send_sms(code, message):
     code = str(code)
@@ -43,8 +42,6 @@ def login_page(request):
                 otp.code = otp_code
                 otp.created = datetime.now()
                 otp.save()
-
-                print(otp.created)
 
             send_sms(otp_code, message='اینم از کد شما')
 
