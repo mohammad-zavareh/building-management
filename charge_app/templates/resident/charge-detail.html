@@ -1,0 +1,28 @@
+{% extends 'resident/base-resident.html' %}
+{% load humanize %}
+
+{% block browser_title %}نمایش شارژ{% endblock %}
+{% block page_title %}نمایش شارژها{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <div class="jumbotron">
+                    <h1 class="display-4">{{ object.service_charge.title }}</h1>
+                    <p class="lead">{{ object.service_charge.description }}</p>
+                    <hr class="my-4">
+                    <p>
+                        {% if object.pay_time %}
+                            پرداخت شده{{ object.pay_time|timesince }}پیش
+                        {% else %}
+                            <a href="{% url 'charge_app_resident:payment_charge' object.pk %}"
+                               class="btn btn-success btn-lg" role="button">پرداخت</a>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

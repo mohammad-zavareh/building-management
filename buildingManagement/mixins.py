@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 
 from building_app.models import Unit
 from notification_app.models import Notification
-from charge_app.models import ServiceCharge
+from charge_app.models import ServiceCharge, ServiceChargeStatus
 
 def convert_to_list(list_of_dictionary):
     result = []
@@ -34,7 +34,7 @@ class ManagerAccessOwnerUnitMixin():
             raise Http404('شما به این صفحه دسترسی ندارید!')
 
 
-class ManagerAccessOwnerChargeMixin():
+class AccessOwnerChargeMixin():
     def dispatch(self, request, *args, **kwargs):
         building = request.user.unit.building
         pk_charge = ServiceCharge.objects.filter(building=building).values('pk')  # returned a list of dictionaries
@@ -45,6 +45,17 @@ class ManagerAccessOwnerChargeMixin():
         else:
             raise Http404('شما به این صفحه دسترسی ندارید!')
 
+
+class AccessOwnerChargeStatusMixin():
+    def dispatch(self, request, *args, **kwargs):
+        unit = request.user.unit
+        charge_status_pk = ServiceChargeStatus.objects.filter(unit=unit).values('pk')  # returned a list of dictionaries
+        pk_list = convert_to_list(charge_status_pk)
+
+        if str(kwargs['pk']) in pk_list:
+            return super().dispatch(request, *args, **kwargs)
+        else:
+            raise Http404('شما به این صفحه دسترسی ندارید!')
 
 class AccessOwnerNotificationMixin():
     def dispatch(self, request, *args, **kwargs):

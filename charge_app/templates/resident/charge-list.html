@@ -20,7 +20,7 @@
                             <th>عنوان</th>
                             <th>مبلغ</th>
                             <th>پرداخت شده/نشده</th>
-                            <th>تاریخ پرداخت</th>
+                            <th>نمایش</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -36,11 +36,8 @@
                                     {% endif %}
                                 </td>
                                 <td>
-                                    {% if object.pay_time %}
-                                        {{ object.pay_time|timesince }}
-                                    {% else %}
-                                        <a href="{% url 'charge_app_resident:payment_charge' object.pk %}" class="btn btn-success">پرداخت</a>
-                                    {% endif %}
+                                    <a href="{% url 'charge_app_resident:charge_detail' object.pk %}"
+                                       class="btn btn-info">نمایش</a>
                                 </td>
                             </tr>
                         {% endfor %}

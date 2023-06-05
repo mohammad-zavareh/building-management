@@ -1,11 +1,11 @@
 from django.http import Http404
 from django.utils import timezone
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404, render, redirect
 
+from  buildingManagement.mixins import AccessOwnerChargeStatusMixin
 from charge_app.models import ServiceChargeStatus
 from building_app.models import Building
 
@@ -18,6 +18,13 @@ class ChargeList(LoginRequiredMixin, ListView):
         unit = self.request.user.unit
         qs = ServiceChargeStatus.objects.filter(unit=unit)
         return qs
+
+
+
+class ChargeDetail(LoginRequiredMixin,AccessOwnerChargeStatusMixin, DetailView):
+    model = ServiceChargeStatus
+    template_name = 'resident/charge-detail.html'
+
 
 
 @login_required

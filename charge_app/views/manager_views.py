@@ -3,7 +3,7 @@ from django import forms
 
 from buildingManagement.mixins import (
     ManagerRequiredMixin,
-    ManagerAccessOwnerChargeMixin,
+    AccessOwnerChargeMixin,
 )
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -43,14 +43,14 @@ class CreateCharge(LoginRequiredMixin, ManagerRequiredMixin, CreateView):
 
 
 
-class UpdateCharge(LoginRequiredMixin, ManagerRequiredMixin, ManagerAccessOwnerChargeMixin, UpdateView):
+class UpdateCharge(LoginRequiredMixin, ManagerRequiredMixin, AccessOwnerChargeMixin, UpdateView):
     model = ServiceCharge
     template_name = 'manager/update-charge.html'
     fields = ["title", "description", "category", "expire_time"]
     success_url = reverse_lazy('charge_app_manager:charge_list')
 
 
-class ChargeStatus(LoginRequiredMixin, ManagerRequiredMixin, ManagerAccessOwnerChargeMixin, DetailView):
+class ChargeStatus(LoginRequiredMixin, ManagerRequiredMixin, AccessOwnerChargeMixin, DetailView):
     model = ServiceCharge
     template_name = 'manager/charge-status.html'
 
