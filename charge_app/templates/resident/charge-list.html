@@ -39,7 +39,7 @@
                                     {% if object.pay_time %}
                                         {{ object.pay_time|timesince }}
                                     {% else %}
-                                        <button>پرداخت</button>
+                                        <a href="{% url 'charge_app_resident:payment_charge' object.pk %}" class="btn btn-success">پرداخت</a>
                                     {% endif %}
                                 </td>
                             </tr>

@@ -1,0 +1,14 @@
+{% extends 'resident/base-resident.html' %}
+{% load humanize %}
+
+{% block browser_title %}وضغیت پرداخت{% endblock %}
+
+{% block content %}
+    <div class="alert {% if status == 100 %}alert-success{% else %}alert-danger{% endif %}" role="alert">
+        <h4 class="alert-heading">پرداخت با موفقیت انجام شد!</h4>
+        <p>آفرین گل پسر. حساب حسابه کاکا برادر، همیشه سعی کن به موقع واریز کنی.مگه مدیر ساختمان چه گناهی کرده</p>
+        <hr>
+        <a href="{% url 'charge_app_resident:charge_list' %}" class="alert-link" dideo-checked="true">بازگشت به صفحه قبض
+            ها</a>
+    </div>
+{% endblock %}

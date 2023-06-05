@@ -32,6 +32,13 @@
                         <p>لیست اعلانات</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{% url 'charge_app_resident:charge_list' %}"
+                       class="nav-link {% if '/resident-panel/charge-list' in request.path %}active{% endif %}">
+                        <i class="fas fa-envelope nav-icon"></i>
+                        <p>لیست شارژ ها</p>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
