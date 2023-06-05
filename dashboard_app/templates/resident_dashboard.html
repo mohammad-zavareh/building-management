@@ -6,5 +6,65 @@
 
 
 {% block content %}
-nothing...
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card border-primary">
+                    <h5 class="card-header text-center bg-primary">قبض های پرداخت نشده</h5>
+                    <div class="card-body">
+                        {% if unpaid_charges %}
+                            {% for charge in unpaid_charges %}
+                                <div class="card">
+                                    <div class="card-body">
+                                        <a href="{% url 'charge_app_resident:charge_detail' charge.pk %}" class="text-dark">{{ charge.service_charge }}</a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="card">
+                                <div class="card-body">
+                                    قبض پرداخت نشده ای ندارید!
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer border-primary">
+                        <a class="text-secondary" href="{% url 'charge_app_resident:charge_list' %}">نمایش همه
+                            قبوض</a>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-md-6">
+                <div class="card border-warning">
+                    <h5 class="card-header text-center bg-warning">اعلانات خوانده نشده</h5>
+                    <div class="card-body">
+                        {% if unseen_notifications %}
+                            {% for notifi in unseen_notifications %}
+                                <div class="card">
+                                    <div class="card-body">
+                                        <a href="{% url 'notification_app_resident:notification_detail' notifi.pk %}" class="text-dark">{{ notifi.title }}</a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="card">
+                                <div class="card-body">
+                                    اعلان خوانده نشده ای ندارید!
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer border-warning">
+                        <a class="text-secondary"
+                           href="{% url 'notification_app_resident:notification_list' %}">نمایش
+                            همه اعلانات</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}
