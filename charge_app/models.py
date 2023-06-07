@@ -12,6 +12,7 @@ from building_app.models import Building, Unit
 
 class Category(models.Model):
     title = models.CharField(max_length=30, verbose_name='عنوان')
+    image = models.ImageField(upload_to='category', verbose_name='تصویر')
     is_active = models.BooleanField(verbose_name='فعال/غیرفعال')
 
     def __str__(self):
@@ -33,7 +34,7 @@ class ServiceCharge(models.Model):  # divide_members   divide_units
     description = models.TextField(blank=True, null=True, verbose_name='توضیحات')
     amount = models.IntegerField(default=0, verbose_name='مبلغ')
     divide_amount = models.CharField(max_length=30, choices=divide_type, verbose_name='تقسیم مبلغ')
-    category = models.ManyToManyField(Category, verbose_name='دسته بندی')
+    category = models.ForeignKey(Category,on_delete=models.CASCADE, verbose_name='دسته بندی')
     expire_time = models.DateTimeField(verbose_name='تاریخ انقضا')
 
     def __str__(self):
@@ -53,11 +54,6 @@ class ServiceCharge(models.Model):  # divide_members   divide_units
 
     is_active.boolean = True
     is_active.short_description = 'فعال'
-
-    def get_categories(self):
-        return " ,".join([i.title for i in self.category.all()])
-
-    get_categories.short_description = 'دسته بندی'
 
 
 class ServiceChargeStatus(models.Model):
