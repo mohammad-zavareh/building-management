@@ -7,7 +7,19 @@ from django.utils import timezone
 
 from account_app.models import User
 from vip_service_app.models import VipService
-from building_app.models import Building, Unit, Category
+from building_app.models import Building, Unit
+
+
+class Category(models.Model):
+    title = models.CharField(max_length=30, verbose_name='عنوان')
+    is_active = models.BooleanField(verbose_name='فعال/غیرفعال')
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = 'دسته بندی'
+        verbose_name_plural = 'دسته بندی ها'
 
 
 class ServiceCharge(models.Model):  # divide_members   divide_units
@@ -55,7 +67,6 @@ class ServiceChargeStatus(models.Model):
     amount = models.IntegerField(verbose_name='مبلغ قابل پرداخت واحد')
     is_paid = models.BooleanField(default=False, verbose_name='پرداخت شده/نشده')
     pay_time = models.DateTimeField(blank=True, null=True, verbose_name='تاریخ پرداخت')
-
 
     def __str__(self):
         return f'{self.service_charge} => {self.unit}'

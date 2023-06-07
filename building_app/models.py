@@ -60,15 +60,3 @@ class Unit(models.Model):
     class Meta:
         verbose_name = 'واحد'
         verbose_name_plural = 'واحد ها'
-
-
-class Category(models.Model):
-    title = models.CharField(max_length=30, verbose_name='عنوان')
-    is_active = models.BooleanField(verbose_name='فعال/غیرفعال')
-
-    def __str__(self):
-        return self.title
-
-    class Meta:
-        verbose_name = 'دسته بندی'
-        verbose_name_plural = 'دسته بندی ها'

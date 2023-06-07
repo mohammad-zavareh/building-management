@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Building, Unit,Category
 from django.utils.html import format_html
 
+from .models import Building, Unit
 
 class BuildingAdmin(admin.ModelAdmin):
     list_display = ('building_id', 'name', 'image_tag', 'is_vip')
@@ -19,13 +19,7 @@ class UnitAdmin(admin.ModelAdmin):
     search_fields = ('name', 'building')
 
 
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('title',)
-    list_filter = ('is_active',)
-    ordering = ('title',)
-    search_fields = ('title',)
-
 
 admin.site.register(Building, BuildingAdmin)
 admin.site.register(Unit, UnitAdmin)
-admin.site.register(Category, CategoryAdmin)
+

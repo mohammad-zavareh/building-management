@@ -11,7 +11,7 @@
             <div class="col-md-6 offset-md-3">
                 <div class="jumbotron">
                     <h1 class="display-4">{{ object.service_charge.title }}</h1>
-                    <p class="lead">{{ object.service_charge.description }}</p>
+                    <p class="lead">{{ object.service_charge.description|safe }}</p>
                     <hr class="my-4">
                     <p>
                         {% if object.pay_time %}
