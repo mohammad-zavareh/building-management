@@ -10,6 +10,10 @@
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <div class="jumbotron">
+                    <div class="text-center">
+                        <img src="{{ object.service_charge.category.image.url }}"
+                             alt="{{ object.service_charge.category.image.url }}" class="img-thumbnail img-size-64">
+                    </div>
                     <h1 class="display-4">{{ object.service_charge.title }}</h1>
                     <p class="lead">{{ object.service_charge.description|safe }}</p>
                     <hr class="my-4">

@@ -32,7 +32,11 @@
                                 <td>{{ charge.title }}</td>
                                 <td>{{ charge.description|truncatewords:3|safe }}</td>
                                 <td>{{ charge.amount|intcomma:False }}</td>
-                                <td>{{ charge.get_categories|truncatewords:2 }}</td>
+                                <td>
+                                    <img src="{{ charge.category.image.url }}"
+                                         alt="{{ charge.category.image.url }}"
+                                         class="img-thumbnail img-size-64">
+                                </td>
                                 <td>{{ charge.expire_time }}</td>
                                 <td><a href="{% url 'charge_app_manager:charge_status' charge.pk %}"
                                        class="btn btn-success btn-block">جزییات</a></td>
@@ -61,20 +65,20 @@
                         <ul class="pagination">
 
                             {% if page_obj.has_previous %}
-                            <li class="paginate_button page-item previous">
-                                <a href="?page={{ page_obj.previous_page_number }}" class="page-link">قبلی</a>
-                            </li>
+                                <li class="paginate_button page-item previous">
+                                    <a href="?page={{ page_obj.previous_page_number }}" class="page-link">قبلی</a>
+                                </li>
                             {% endif %}
 
                             {% for page in paginator.page_range %}
-                            <li class="paginate_button page-item {% if page == page_obj.number %}active{% endif %}">
-                                <a href="?page={{ page }}" class="page-link">{{ page }}</a></li>
+                                <li class="paginate_button page-item {% if page == page_obj.number %}active{% endif %}">
+                                    <a href="?page={{ page }}" class="page-link">{{ page }}</a></li>
                             {% endfor %}
 
                             {% if page_obj.has_next %}
-                            <li class="paginate_button page-item next">
-                                <a href="?page={{ page_obj.next_page_number }}" class="page-link">بعدی</a>
-                            </li>
+                                <li class="paginate_button page-item next">
+                                    <a href="?page={{ page_obj.next_page_number }}" class="page-link">بعدی</a>
+                                </li>
                             {% endif %}
 
                         </ul>
