@@ -39,6 +39,7 @@ class UserManager(BaseUserManager):
 class User(AbstractUser):
     username = None
     phone_number = models.IntegerField(unique=True, verbose_name='شماره همراه')
+    is_manager = models.BooleanField(default=False, verbose_name='مدیر ساختمان')
 
     USERNAME_FIELD = 'phone_number'
     REQUIRED_FIELDS = []
@@ -54,7 +55,7 @@ class Otp(models.Model):
     code = models.IntegerField()
     created = models.DateTimeField()
 
-    def get_expire_time(self):
+    def get_time_left(self):
         time_to_expire = 1
         created_time = self.created.replace(tzinfo=None)
 
@@ -63,8 +64,8 @@ class Otp(models.Model):
         now = datetime.now()
         if expire_time > now:
             time_reverse = expire_time - now
-            time_reverse_seconds = time_reverse.seconds
+            time_left = time_reverse.seconds
         else:
-            time_reverse_seconds = 0
+            time_left = 0
 
-        return time_reverse_seconds
+        return time_left

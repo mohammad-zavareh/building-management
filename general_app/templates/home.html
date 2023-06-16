@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>صفحه اصلی</title>
 </head>
 <body>
-<a href="{% url 'dashboard_app:manager_dashboard' %}">panel</a>
-<a href="{% url 'dashboard_app:resident_dashboard' %}">panel</a>
+    <a class="btn btn-primary" href="{% url 'account_app_register:register_account' %}">ثبت نام</a>
+    <hr>
+    <a class="btn btn-primary" href="{% url 'account_app_login:login_account' %}">ورود</a>
 </body>
 </html>

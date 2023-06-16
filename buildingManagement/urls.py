@@ -21,7 +21,8 @@ urlpatterns = [
 
     path('', include('dashboard_app.urls')),
     path('', include('general_app.urls')),
-    path('', include('account_app.urls')),
+    path('account', include('account_app.urls.register_urls')),
+    path('account', include('account_app.urls.login_urls')),
 
     path('manager-panel', include('building_app.urls')),
     path('manager-panel', include('vip_service_app.urls')),

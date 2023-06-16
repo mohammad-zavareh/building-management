@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+{{ phone_number }}
+<br>
+{{ expire_time }}
+<br>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">ادامه</button>
+</form>
+<hr>
+<a href="{% url 'account_app_login:verify_password' %}">ورود با رمز</a>
+</body>
+</html>

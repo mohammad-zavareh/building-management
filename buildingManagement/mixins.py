@@ -15,8 +15,8 @@ def convert_to_list(list_of_dictionary):
 
 class ManagerRequiredMixin():
     def dispatch(self, request, *args, **kwargs):
-        unit = request.user.unit
-        if not unit.is_manager:
+        user = request.user
+        if not user.is_manager:
             raise Http404('شما به این صفحه دسترسی ندارید')
         return super().dispatch(request, *args, **kwargs)
 

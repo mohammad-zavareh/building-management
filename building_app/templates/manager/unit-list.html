@@ -45,7 +45,7 @@
                                         {% if unit.resident.get_full_name %}
                                             <p id="is_manager_badge_{{ unit.pk }}">
                                                 {{ unit.resident.get_full_name }}
-                                                {% if unit.is_manager %}
+                                                {% if request.user.is_manager %}
                                                     <span class="right badge badge-primary">مدیر</span>
                                                 {% endif %}
                                             </p>
@@ -53,7 +53,7 @@
                                         {% else %}
                                             <p id="is_manager_badge_{{ unit.pk }}">
                                                 ثبت نشده
-                                                {% if unit.is_manager %}
+                                                {% if request.user.is_manager %}
                                                     <span class="right badge badge-primary">مدیر</span>
                                                 {% endif %}
                                             </p>

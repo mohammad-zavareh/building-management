@@ -1,18 +1,12 @@
 from django.db import models
 
-from django.utils.crypto import get_random_string
 from django.utils import timezone
 
 from account_app.models import User
 from vip_service_app.models import VipService
 
 class Building(models.Model):
-    building_id = models.CharField(default=get_random_string(5),
-                                   max_length=5,
-                                   unique=True,
-                                   verbose_name='شناسه ساختمان'
-                                   )
-
+    manager = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='مدیر')
     name = models.CharField(max_length=20, verbose_name='نام')
     image = models.ImageField(upload_to='building', verbose_name='تصویر')
     rules = models.TextField(blank=True, null=True, verbose_name='قوانین')
@@ -51,7 +45,6 @@ class Unit(models.Model):
     resident = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='ساکن')
 
     name = models.CharField(max_length=50, verbose_name='نام')
-    is_manager = models.BooleanField(default=False, verbose_name='مدیر ساختمان')
     number_of_member = models.IntegerField(default=1, verbose_name='تعداد ساکنین')
 
     def __str__(self):

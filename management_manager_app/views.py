@@ -1,7 +1,7 @@
 from django.views.generic import View
 from django.shortcuts import render
 
-from building_app.models import Unit
+from account_app.models import User
 
 from buildingManagement.mixins import ManagerRequiredMixin
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -9,11 +9,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 class AddManager(LoginRequiredMixin, ManagerRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        pk = request.GET.get('pk')
 
-        unit = Unit.objects.filter(id=pk).first()
-        unit.is_manager = True
-        unit.save()
+        user = request.user
+        user.is_manager = True
+        user.save()
         message = {
             'text': 'کاربر مورد نظر با موفقیت با مدیر ساختمان شد',
             'tag': 'success'
@@ -27,17 +26,17 @@ class ResignManager(LoginRequiredMixin, ManagerRequiredMixin, View):
         return render(request, 'manager/resign-manager.html', {})
 
     def post(self, request, *args, **kwargs):
-        unit = request.user.unit
+        user = request.user
         building = request.user.unit.building
-        number_of_manager = Unit.objects.filter(building=building, is_manager=True).count()
+        number_of_manager = User.objects.filter(is_manager=True,building=building).count()
         message = {
             'text': '',
             'teg': '',
         }
 
         if number_of_manager > 1:
-            unit.is_manager = False
-            unit.save()
+            user.is_manager = False
+            user.save()
 
             message['text'] = 'استعفای شما با وفقیت انجام شد. از این پس شما فقط به پنل ساکنین دسترسی دارید'
             message['tag'] = 'success'

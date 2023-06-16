@@ -14,6 +14,9 @@
                 <a href="{% url 'vip_service_app:vip_service_list' %}" class="nav-link">عضو ویژه نیستید</a>
             {% endif %}
         </li>
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="{% url 'account_app_login:logout' %}" class="nav-link">خروج</a>
+        </li>
     </ul>
 
     <!-- SEARCH FORM -->

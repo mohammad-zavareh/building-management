@@ -18,7 +18,7 @@ class UnitList(LoginRequiredMixin, ManagerRequiredMixin, ListView):
 
     def get_queryset(self):
         building = self.request.user.unit.building
-        queryset = Unit.objects.filter(building=building).order_by('-is_manager')
+        queryset = Unit.objects.filter(building=building)
         return queryset
 
 

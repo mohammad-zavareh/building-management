@@ -4,7 +4,7 @@ from django.utils.html import format_html
 from .models import Building, Unit
 
 class BuildingAdmin(admin.ModelAdmin):
-    list_display = ('building_id', 'name', 'image_tag', 'is_vip')
+    list_display = ('name', 'image_tag', 'is_vip')
     ordering = ('name',)
     search_fields = ('name',)
 
@@ -15,7 +15,7 @@ class BuildingAdmin(admin.ModelAdmin):
 
 
 class UnitAdmin(admin.ModelAdmin):
-    list_display = ('name', 'building', 'is_manager')
+    list_display = ('name', 'building')
     search_fields = ('name', 'building')
 
 
