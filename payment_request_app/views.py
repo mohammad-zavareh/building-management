@@ -6,7 +6,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
 from .models import RequestPayment
-# -----------------------------------------------------------------------------payment request
 
 
 class PaymentRequestList(LoginRequiredMixin, ManagerRequiredMixin, ListView):
@@ -15,7 +14,7 @@ class PaymentRequestList(LoginRequiredMixin, ManagerRequiredMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        building = self.request.user.unit.building
+        building = self.request.user.building
         queryset = super().get_queryset().filter(building=building)
         return queryset
 
@@ -28,16 +27,16 @@ class CreatePaymentRequest(LoginRequiredMixin, ManagerRequiredMixin, CreateView)
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        context['credit'] = self.request.user.unit.building.credit
+        context['credit'] = self.request.user.building.credit
         return context
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
 
-        credit = self.request.user.unit.building.credit
+        credit = self.request.user.building.credit
         amount = self.object.amount
         if credit >= amount:
-            building = self.request.user.unit.building
+            building = self.request.user.building
 
             building.credit -= amount
             building.save()

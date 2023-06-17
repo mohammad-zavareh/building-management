@@ -17,7 +17,7 @@ class UnitList(LoginRequiredMixin, ManagerRequiredMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        building = self.request.user.unit.building
+        building = self.request.user.building
         queryset = Unit.objects.filter(building=building)
         return queryset
 

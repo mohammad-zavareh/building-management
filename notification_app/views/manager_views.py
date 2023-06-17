@@ -17,7 +17,7 @@ class NotificationList(LoginRequiredMixin, ManagerRequiredMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        building = self.request.user.unit.building
+        building = self.request.user.building
         qs = super().get_queryset().filter(building=building).order_by('-created')
         return qs
 
@@ -29,7 +29,7 @@ class CreateNotification(LoginRequiredMixin, ManagerRequiredMixin, CreateView):
     success_url = reverse_lazy('notification_app_manager:notification_list')
 
     def form_valid(self, form):
-        building = self.request.user.unit.building
+        building = self.request.user.building
 
         self.object = form.save(commit=False)
         self.object.building = building

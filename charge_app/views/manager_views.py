@@ -16,7 +16,7 @@ class ChargeList(LoginRequiredMixin, ManagerRequiredMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        building = self.request.user.unit.building
+        building = self.request.user.building
         queryset = ServiceCharge.objects.filter(building=building)
         return queryset
 
@@ -36,7 +36,7 @@ class CreateCharge(LoginRequiredMixin, ManagerRequiredMixin, CreateView):
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
-        self.object.building = self.request.user.unit.building
+        self.object.building = self.request.user.building
         self.object.save()
         return super().form_valid(form)
 
