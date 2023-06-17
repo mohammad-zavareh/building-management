@@ -18,11 +18,7 @@ def login_account(request):
             phone_number = form.cleaned_data["phone_number"]
             request.session["phone_number"] = phone_number
 
-            otp_code = randint(1000, 9999)
-            set_otp_code(otp_code, phone_number)
-            send_sms(otp_code, message='اینم از کد شما')
-
-            return redirect('account_app_login:verify_otp')
+            return redirect('account_app_login:verify_password')
 
     context = {'form': form}
     return render(request, 'login/login-account.html', context)
@@ -60,6 +56,13 @@ def verify_password(request):
     context = {'form': form}
     return render(request, 'login/verify-password.html', context)
 
+def set_otp(request):
+    phone_number = request.session['phone_number']
+    otp_code = randint(1000, 9999)
+    set_otp_code(otp_code, phone_number)
+    send_sms(otp_code, message='اینم از کد شما')
+    return redirect("account_app_login:verify_otp")
+
 
 def verify_otp(request):
     phone_number = request.session['phone_number']
@@ -78,7 +81,8 @@ def verify_otp(request):
                 if user.exists():
                     user = user.first()
                     login(request, user)
-                    del request.session['phone_number']
+                    if 'phone_number' in request.session:
+                        del request.session['phone_number']
 
                     if user.is_manager:
                         building = Building.objects.filter(manager=user)
@@ -88,7 +92,7 @@ def verify_otp(request):
                     else:
                         unit = Unit.objects.filter(resident=user)
                         if not unit.exists():
-                            return redirect("account_app_register:register_building")
+                            return redirect("account_app_register:register_unit")
                         return redirect('dashboard_app:resident_dashboard')
                 else:
                     print('کاربری با این شماره وجود ندارد')
