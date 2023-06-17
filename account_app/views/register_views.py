@@ -109,7 +109,10 @@ def register_building(request):
             building = form.save(commit=False)
             building.manager = request.user
             building.save()
-            del request.session['phone_number']
+
+            if 'phone_number' in request.session:
+                del request.session['phone_number']
+
             return redirect('dashboard_app:manager_dashboard')
 
     context = {'form': form}

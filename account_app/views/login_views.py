@@ -7,7 +7,8 @@ from account_app.forms.login_forms import LoginForm, OtpForm, PasswordForm
 from .register_views import send_sms, set_otp_code
 from account_app.models import Otp, User
 
-from datetime import datetime
+from building_app.models import Building, Unit
+
 
 def login_account(request):
     form = LoginForm()
@@ -39,13 +40,20 @@ def verify_password(request):
 
             if user.exists():
                 user = user.first()
+
                 login(request, user)
                 del request.session['phone_number']
 
                 if user.is_manager:
+                    building = Building.objects.filter(manager=user)
+                    if not building.exists():
+                        return redirect("account_app_register:register_building")
                     return redirect("dashboard_app:manager_dashboard")
                 else:
-                    return redirect("dashboard_app:resident_dashboard")
+                    unit = Unit.objects.filter(resident=user)
+                    if not unit.exists():
+                        return redirect("account_app_register:register_building")
+                return redirect("dashboard_app:resident_dashboard")
             else:
                 print('کاربری با این شماره و رمز عبور وجود ندارد!')
 
@@ -71,11 +79,19 @@ def verify_otp(request):
                     user = user.first()
                     login(request, user)
                     del request.session['phone_number']
+
                     if user.is_manager:
+                        building = Building.objects.filter(manager=user)
+                        if not building.exists():
+                            return redirect("account_app_register:register_building")
                         return redirect('dashboard_app:manager_dashboard')
                     else:
+                        unit = Unit.objects.filter(resident=user)
+                        if not unit.exists():
+                            return redirect("account_app_register:register_building")
                         return redirect('dashboard_app:resident_dashboard')
-                print('کاربری با این شماره وجود ندارد')
+                else:
+                    print('کاربری با این شماره وجود ندارد')
             else:
                 print('کد وارد شده اشتباه است')
 
