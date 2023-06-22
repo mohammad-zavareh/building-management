@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
+from django.contrib.auth.hashers import make_password
 
 from datetime import datetime
 from random import randint
@@ -81,7 +82,7 @@ def verify_otp(request):
                 user = User.objects.create(
                     phone_number=phone_number,
                     is_manager=is_manager,
-                    password=request.session['password'],
+                    password=make_password(request.session['password']),
                     first_name=request.session['first_name'],
                     last_name=request.session['last_name'],
                 )
