@@ -6,11 +6,14 @@ from building_app.models import Building, Unit
 
 
 class RegisterAccountForm(ModelForm):
-
+    re_password = forms.CharField(max_length=100,
+                                  label='تکرار رمز عبور',
+                                  widget=forms.PasswordInput(attrs={'placeholder': ' تکرار رمز عبور'})
+                                  )
 
     class Meta:
         model = User
-        fields = ['is_manager', 'phone_number', 'password', 'first_name', 'last_name']
+        fields = ['is_manager', 'phone_number', 'password', 're_password', 'first_name', 'last_name']
         widgets = {
             'phone_number': forms.NumberInput(attrs={'placeholder': 'تلفن همراه'}),
             'first_name': forms.TextInput(attrs={'placeholder': 'نام'}),
@@ -19,7 +22,12 @@ class RegisterAccountForm(ModelForm):
             'password': forms.PasswordInput(attrs={'placeholder': 'رمز عبور'})
         }
 
-
+    def clean_re_password(self):
+        password = self.cleaned_data.get('password')
+        re_password = self.cleaned_data.get('re_password')
+        if password == re_password:
+            return re_password
+        raise forms.ValidationError('رمز عبور با تکرار رمز عبور تطابق ندارد!')
 
 
 class OtpForm(forms.Form):
