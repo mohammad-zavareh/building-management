@@ -71,7 +71,7 @@ def verify_otp(request):
             otp_code = otp.code
 
             if otp.get_time_left() == 0:
-                return redirect('account_app_login:login_account')
+                form.add_error('otp','اعتبار کد به پایان رسیده است')
 
             if otp_code == otp_entered:
                 user = User.objects.create(
@@ -87,7 +87,7 @@ def verify_otp(request):
                 else:
                     return redirect('account_app_register:register_unit')
             else:
-                print('کد وارد شده اشتباه است')
+                form.add_error('otp','کد وارد شده اشتباه است')
 
     context = {
         'phone_number': phone_number,
