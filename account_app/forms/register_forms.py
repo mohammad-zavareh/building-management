@@ -67,3 +67,10 @@ class DetectManagerForm(forms.Form):
         label='شماره همراه مدیر ساختمان',
         widget=forms.NumberInput(attrs={'placeholder': 'شماره مدیر ساختمان'})
     )
+
+    def clean_phone_number_of_manager(self):
+        phone_number_of_manager = self.cleaned_data.get('phone_number_of_manager')
+        building = Building.objects.filter(manager__phone_number=phone_number_of_manager)
+        if not building.exists():
+            raise forms.ValidationError('مدیری با این شماره موبایل وجود ندارد!')
+        return phone_number_of_manager

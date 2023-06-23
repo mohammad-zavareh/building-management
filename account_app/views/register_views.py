@@ -111,9 +111,6 @@ def register_building(request):
             building.manager = request.user
             building.save()
 
-            if 'phone_number' in request.session:
-                del request.session['phone_number']
-
             return redirect('dashboard_app:manager_dashboard')
 
     context = {'form': form}
@@ -122,25 +119,24 @@ def register_building(request):
 
 def register_unit(request):
     unit_form = RegisterUnitForm(prefix='unit_form')
-    manager_form = DetectManagerForm(prefix='manager_form')
+    detect_form = DetectManagerForm(prefix='manager_form')
     if request.method == 'POST':
         unit_form = RegisterUnitForm(request.POST, prefix='unit_form')
-        manager_form = DetectManagerForm(request.POST, prefix='manager_form')
+        detect_form = DetectManagerForm(request.POST, prefix='manager_form')
 
-        if unit_form.is_valid() and manager_form.is_valid():
+        if unit_form.is_valid() and detect_form.is_valid():
             # detect manager
-            phone_number_of_manager = manager_form.cleaned_data['phone_number_of_manager']
+            phone_number_of_manager = detect_form.cleaned_data.get('phone_number_of_manager')
             building = Building.objects.filter(manager__phone_number=phone_number_of_manager).first()
 
             unit = unit_form.save(commit=False)
             unit.resident = request.user
             unit.building = building
             unit.save()
-            del request.session['phone_number']
             return redirect('dashboard_app:resident_dashboard')
 
     context = {
         'unit_form': unit_form,
-        'manager_form': manager_form
+        'manager_form': detect_form
     }
     return render(request, 'register/register-unit.html', context)
