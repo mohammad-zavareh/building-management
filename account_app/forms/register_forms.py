@@ -29,6 +29,12 @@ class RegisterAccountForm(ModelForm):
             return re_password
         raise forms.ValidationError('رمز عبور با تکرار رمز عبور تطابق ندارد!')
 
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get('phone_number')
+        user = User.objects.filter(phone_number=phone_number)
+        if user.exists():
+            raise forms.ValidationError('این کاربر قبلا ثبت نام کرده است!')
+        return phone_number
 
 class OtpForm(forms.Form):
     otp = forms.IntegerField(

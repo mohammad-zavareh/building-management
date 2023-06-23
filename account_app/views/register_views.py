@@ -74,11 +74,6 @@ def verify_otp(request):
                 return redirect('account_app_login:login_account')
 
             if otp_code == otp_entered:
-                user = User.objects.filter(phone_number=phone_number)
-                if user.exists():
-                    print('این کاربر قبلا در سایت ثبت نام کرده!')
-                    return redirect('account_app_login:login_account')
-
                 user = User.objects.create(
                     phone_number=phone_number,
                     is_manager=is_manager,
