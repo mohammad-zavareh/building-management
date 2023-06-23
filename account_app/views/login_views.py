@@ -12,6 +12,9 @@ from building_app.models import Building, Unit
 
 
 def login_account(request):
+    if request.user.is_authenticated:
+        return redirect('general_app:home')
+
     form = LoginForm()
     if request.method == "POST":
         form = LoginForm(request.POST)
@@ -26,8 +29,10 @@ def login_account(request):
 
 
 def verify_password(request):
-    phone_number = request.session['phone_number']
+    if request.user.is_authenticated:
+        return redirect('general_app:home')
 
+    phone_number = request.session['phone_number']
     form = PasswordForm()
     if request.method == "POST":
         form = PasswordForm(request.POST)
@@ -66,10 +71,11 @@ def set_otp(request):
 
 
 def verify_otp(request):
+    if request.user.is_authenticated:
+        return redirect('general_app:home')
+
     phone_number = request.session['phone_number']
-
     otp = Otp.objects.filter(phone_number=phone_number).first()
-
     form = OtpForm()
     if request.method == "POST":
         form = OtpForm(request.POST)
@@ -109,6 +115,9 @@ def verify_otp(request):
 
 
 def re_send_otp(request, phone_number):
+    if request.user.is_authenticated:
+        return redirect('general_app:home')
+
     otp = Otp.objects.filter(phone_number=phone_number)
     if otp.exists():
         otp = otp.first()

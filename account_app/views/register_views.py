@@ -1,6 +1,7 @@
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 
 from datetime import datetime
@@ -37,6 +38,9 @@ def set_otp_code(otp_code, phone_number):
 
 
 def register_account(request):
+    if request.user.is_authenticated:
+        return redirect('general_app:home')
+
     form = RegisterAccountForm()
     if request.method == 'POST':
         form = RegisterAccountForm(request.POST)
@@ -59,8 +63,10 @@ def register_account(request):
 
 
 def verify_otp(request):
-    phone_number = request.session['phone_number']
+    if request.user.is_authenticated:
+        return redirect('general_app:home')
 
+    phone_number = request.session['phone_number']
     is_manager = request.session['is_manager']
     otp = Otp.objects.filter(phone_number=phone_number).first()
     form = OtpForm()
@@ -99,6 +105,9 @@ def verify_otp(request):
 
 
 def re_send_otp(request, phone_number):
+    if request.user.is_authenticated:
+        return redirect('general_app:home')
+
     otp = Otp.objects.filter(phone_number=phone_number)
     if otp.exists():
         otp = otp.first()
@@ -111,7 +120,7 @@ def re_send_otp(request, phone_number):
         raise Http404('شماره همراه اشتباه است!')
 
 
-
+@login_required(login_url='account_app_register:register_account')
 def register_building(request):
     form = RegisterBuildingForm()
     if request.method == 'POST':
@@ -126,7 +135,7 @@ def register_building(request):
     context = {'form': form}
     return render(request, 'register/register-building.html', context)
 
-
+@login_required(login_url='account_app_register:register_account')
 def register_unit(request):
     unit_form = RegisterUnitForm(prefix='unit_form')
     detect_form = DetectManagerForm(prefix='manager_form')
