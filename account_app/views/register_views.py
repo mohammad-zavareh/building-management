@@ -1,3 +1,4 @@
+from django.http import Http404
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.hashers import make_password
@@ -95,6 +96,20 @@ def verify_otp(request):
         'form': form
     }
     return render(request, 'register/verify_otp.html', context)
+
+
+def re_send_otp(request, phone_number):
+    otp = Otp.objects.filter(phone_number=phone_number)
+    if otp.exists():
+        otp = otp.first()
+        if otp.get_time_left() == 0:
+            otp_code = randint(1000, 9999)
+            set_otp_code(otp_code, phone_number)
+            send_sms(otp_code, message='اینم از کد شما')
+            return redirect('account_app_register:verify_otp')
+    else:
+        raise Http404('شماره همراه اشتباه است!')
+
 
 
 def register_building(request):

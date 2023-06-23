@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>اعتبار سنجی ثبت نام</title>
 </head>
 <body>
 
@@ -15,5 +15,10 @@
     {{ form.as_p }}
     <button type="submit">ادامه</button>
 </form>
+
+{% if expire_time == 0 %}
+    <a href="{% url 'account_app_register:re_send_otp' phone_number %}">ارسال مجدد کد</a>
+{% endif %}
+
 </body>
 </html>
