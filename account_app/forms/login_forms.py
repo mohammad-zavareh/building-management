@@ -6,7 +6,10 @@ from account_app.models import User
 class LoginForm(forms.Form):
     phone_number = forms.IntegerField(
         label='شماره همراه',
-        widget=forms.NumberInput(attrs={'placeholder': 'شماره همراه'})
+        widget=forms.NumberInput(attrs={
+            'placeholder': 'شماره همراه',
+            'class': 'input100',
+        })
     )
 
     def clean_phone_number(self):
