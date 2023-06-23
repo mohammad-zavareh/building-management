@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 
 from random import randint
@@ -32,9 +32,9 @@ def verify_password(request):
         form = PasswordForm(request.POST)
         if form.is_valid():
             password = form.cleaned_data['password']
-            user = User.objects.filter(phone_number=phone_number, password=password)
+            user = authenticate(request, phone_number=phone_number, password=password)
 
-            if user.exists():
+            if user is not None:
                 user = user.first()
 
                 login(request, user)
@@ -49,9 +49,9 @@ def verify_password(request):
                     unit = Unit.objects.filter(resident=user)
                     if not unit.exists():
                         return redirect("account_app_register:register_building")
-                return redirect("dashboard_app:resident_dashboard")
+                    return redirect("dashboard_app:resident_dashboard")
             else:
-                print('کاربری با این شماره و رمز عبور وجود ندارد!')
+                form.add_error('phone_number','کاربری با این شماره و رمز عبور وجود ندارد')
 
     context = {'form': form}
     return render(request, 'login/verify-password.html', context)
@@ -95,9 +95,9 @@ def verify_otp(request):
                             return redirect("account_app_register:register_unit")
                         return redirect('dashboard_app:resident_dashboard')
                 else:
-                    print('کاربری با این شماره وجود ندارد')
+                    form.add_error('otp','کاربری با این شماره وجود ندارد')
             else:
-                print('کد وارد شده اشتباه است')
+                form.add_error('otp','کد وارد شده اشتباه است')
 
     context = {
         'phone_number': phone_number,

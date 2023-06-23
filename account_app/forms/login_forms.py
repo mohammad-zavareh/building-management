@@ -9,6 +9,14 @@ class LoginForm(forms.Form):
         widget=forms.NumberInput(attrs={'placeholder': 'شماره همراه'})
     )
 
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get('phone_number')
+        user = User.objects.filter(phone_number=phone_number)
+
+        if not user.exists():
+            raise forms.ValidationError('حسابی با این شماره وجود ندارد')
+        return phone_number
+
 
 class OtpForm(forms.Form):
     otp = forms.IntegerField(
