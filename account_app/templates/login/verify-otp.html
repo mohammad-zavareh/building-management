@@ -1,7 +1,7 @@
 {% extends 'base_form/base.html' %}
 {% load static %}
 
-{% block title %}اعتبار سنجی
+{% block title %}ورود با رمز یکبار مصرف
 {% endblock %}
 
 {% block content %}
@@ -10,18 +10,18 @@
         <!-- input form -->
         <form method="post" class="login100-form validate-form">
             {% csrf_token %}
-            <span class="login100-form-title">اعتبار سنجی</span>
+            <span class="login100-form-title">ورود با رمز یکبار مصرف</span>
 
-            <!-- enter email-->
+            <!-- inputs -->
             <div class="wrap-input100 validate-input" data-validate="لطفا کد پیامک شده را وارد کنید!">
                 {{ form.otp }}
 
                 <span class="focus-input100"></span>
                 <span class="symbol-input100">
-                        <i class="fa fa-phone" aria-hidden="true"></i>
+                        <i class="fa fa-lock" aria-hidden="true"></i>
                     </span>
             </div>
-            <!-- / enter email -->
+            <!-- / inputs -->
 
             <!-- login button-->
             <div class="container-login100-form-btn">
@@ -29,7 +29,7 @@
             </div>
             <!-- / login button -->
 
-            <!-- restore password -->
+            <!-- resend otp -->
             {% if expire_time == 0 %}
                 <div class="text-center p-t-12">
                     <a class="txt2" href="{% url 'account_app_login:re_send_otp' phone_number %}">
@@ -41,15 +41,15 @@
                     <p>{{ expire_time }}</p>
                 </div>
             {% endif %}
-            <!-- / restore password-->
+            <!-- / resend otp -->
 
-            <!-- register-->
+            <!-- change number-->
             <div class="text-center p-t-136">
                 <a class="txt2" href="{% url 'account_app_login:login_account' %}">
                     تغییر {{ phone_number }}
                 </a>
             </div>
-            <!-- / register-->
+            <!-- / change number -->
 
         </form>
         <!-- / input form -->

@@ -24,12 +24,18 @@ class LoginForm(forms.Form):
 class OtpForm(forms.Form):
     otp = forms.IntegerField(
         label='کد پیامک شده',
-        widget=forms.NumberInput(attrs={'placeholder': 'کد پیامک شده'})
+        widget=forms.NumberInput(attrs={
+            'placeholder': 'کد پیامک شده',
+            'class': 'input100',
+        })
     )
 
 
 class PasswordForm(forms.Form):
     password = forms.CharField(
         label='رمز عبور',
-        widget=forms.PasswordInput(attrs={'placeholder': 'رمز عبور'})
+        widget=forms.PasswordInput(attrs={
+            'placeholder': 'رمز عبور',
+            'class': 'input100',
+        })
     )
