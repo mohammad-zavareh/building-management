@@ -1,15 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<form method="post">
-    {% csrf_token %}
-    {{ unit_form.as_p }}
-    {{ manager_form.as_p }}
-    <button type="submit">ثبت</button>
-</form>
-</body>
-</html>
+{% extends 'base_form/base.html' %}
+{% load static %}
+
+{% block title %}ثبت اطلاعات واحد
+{% endblock %}
+
+{% block content %}
+    <div class="wrap-login100">
+
+        <!-- input form -->
+        <form method="post" class="login100-form validate-form">
+            {% csrf_token %}
+            <span class="login100-form-title">ثبت اطلاعات واحد</span>
+
+            <!-- inputs -->
+            <div class="wrap-input100 validate-input" data-validate="لطفا نام واحد را وارد کنید!">
+                {{ unit_form.name }}
+
+                <span class="focus-input100"></span>
+                <span class="symbol-input100">
+                        <i class="fa fa-building" aria-hidden="true"></i>
+                    </span>
+            </div>
+
+            <div class="wrap-input100 validate-input" data-validate="لطفا تعداد اعضای  واحد خود را وارد کنید!">
+                {{ unit_form.number_of_member }}
+
+                <span class="focus-input100"></span>
+                <span class="symbol-input100">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                    </span>
+            </div>
+
+            <div class="wrap-input100 validate-input" data-validate="لطفا شماره همراه مدیر ساختمان را وارد کنید!">
+                {{ manager_form.phone_number_of_manager }}
+
+                <span class="focus-input100"></span>
+                <span class="symbol-input100">
+                        <i class="fa fa-mobile" aria-hidden="true"></i>
+                    </span>
+            </div>
+            <!-- / inputs -->
+
+            <!-- errors -->
+            {% if manager_form.phone_number_of_manager.errors %}
+                {% for error in manager_form.phone_number_of_manager.errors %}
+                    <p class="text-danger rtl txt2">{{ error }}</p>
+                {% endfor %}
+            {% endif %}
+            <!-- / errors -->
+
+            <!-- login button-->
+            <div class="container-login100-form-btn">
+                <button class="login100-form-btn">ثبت</button>
+            </div>
+            <!-- / login button -->
+
+            <!-- coming soon-->
+            <div class="text-center p-t-136">
+
+            </div>
+            <!-- / coming soon-->
+
+        </form>
+        <!-- / input form -->
+
+        <!-- form image -->
+        <div class="login100-pic js-tilt" data-tilt>
+            <img src="{% static 'Login/pics/img-01.png' %}" alt="IMG">
+        </div>
+        <!-- / form image -->
+
+    </div>
+{% endblock %}

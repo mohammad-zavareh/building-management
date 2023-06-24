@@ -1,14 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<form method="post" enctype='multipart/form-data'>
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">ثبت</button>
-</form>
-</body>
-</html>
+{% extends 'base_form/base.html' %}
+{% load static %}
+
+{% block title %}ثبت اطلاعات ساختمان
+{% endblock %}
+
+{% block content %}
+    <div class="wrap-login100">
+
+        <!-- input form -->
+        <form method="post" class="login100-form validate-form">
+            {% csrf_token %}
+            <span class="login100-form-title">ثبت اطلاعات ساختمان</span>
+
+            <!-- inputs -->
+            <div class="wrap-input100 validate-input" data-validate="لطفا تصویر ساختمان را وارد کنید!">
+                <h6 class="rtl">{{ form.image.label }}</h6><br>
+                {{ form.image }}
+            </div>
+
+            <div class="wrap-input100 validate-input" data-validate="لطفا نام ساختمان خود را وارد کنید!">
+                {{ form.name }}
+
+                <span class="focus-input100"></span>
+                <span class="symbol-input100">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                    </span>
+            </div>
+
+            <div class="wrap-input100 validate-input" data-validate="لطفا قوانین ساختمان را وارد کنید!">
+                {{ form.rules }}
+
+                <span class="focus-input100"></span>
+                <span class="symbol-input100">
+                        <i class="fa fa-mobile" aria-hidden="true"></i>
+                    </span>
+            </div>
+            <!-- / inputs -->
+
+            <!-- login button-->
+            <div class="container-login100-form-btn">
+                <button class="login100-form-btn">ثبت</button>
+            </div>
+            <!-- / login button -->
+
+            <!-- coming soon-->
+            <div class="text-center p-t-136">
+
+            </div>
+            <!-- / coming soon-->
+
+        </form>
+        <!-- / input form -->
+
+        <!-- form image -->
+        <div class="login100-pic js-tilt" data-tilt>
+            <img src="{% static 'Login/pics/img-01.png' %}" alt="IMG">
+        </div>
+        <!-- / form image -->
+
+    </div>
+{% endblock %}

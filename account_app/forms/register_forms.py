@@ -8,18 +8,18 @@ from building_app.models import Building, Unit
 class RegisterAccountForm(ModelForm):
     re_password = forms.CharField(max_length=100,
                                   label='تکرار رمز عبور',
-                                  widget=forms.PasswordInput(attrs={'placeholder': ' تکرار رمز عبور'})
+                                  widget=forms.PasswordInput(attrs={'placeholder': ' تکرار رمز عبور', 'class': 'input100'})
                                   )
 
     class Meta:
         model = User
         fields = ['is_manager', 'phone_number', 'password', 're_password', 'first_name', 'last_name']
         widgets = {
-            'phone_number': forms.NumberInput(attrs={'placeholder': 'تلفن همراه'}),
-            'first_name': forms.TextInput(attrs={'placeholder': 'نام'}),
-            'last_name': forms.TextInput(attrs={'placeholder': 'نام خانوادگی'}),
-            'is_manager': forms.CheckboxInput(),
-            'password': forms.PasswordInput(attrs={'placeholder': 'رمز عبور'})
+            'phone_number': forms.NumberInput(attrs={'placeholder': 'تلفن همراه', 'class': 'input100'}),
+            'first_name': forms.TextInput(attrs={'placeholder': 'نام', 'class': 'input100'}),
+            'last_name': forms.TextInput(attrs={'placeholder': 'نام خانوادگی', 'class': 'input100'}),
+            'is_manager': forms.CheckboxInput(attrs={'class': 'input100'}),
+            'password': forms.PasswordInput(attrs={'placeholder': 'رمز عبور', 'class': 'input100'})
         }
 
     def clean_re_password(self):
@@ -36,6 +36,7 @@ class RegisterAccountForm(ModelForm):
             raise forms.ValidationError('این کاربر قبلا ثبت نام کرده است!')
         return phone_number
 
+
 class OtpForm(forms.Form):
     otp = forms.IntegerField(
         widget=forms.NumberInput(attrs={'placeholder': 'کد پیامک شده'}),
@@ -48,8 +49,8 @@ class RegisterBuildingForm(ModelForm):
         model = Building
         fields = ['name', 'image', 'rules']
         widgets = {
-            'name': forms.TextInput(attrs={'placeholder': 'نام ساختمان'}),
-            'rules': forms.Textarea(attrs={'placeholder': 'قوانین ساختمان'}),
+            'name': forms.TextInput(attrs={'placeholder': 'نام ساختمان', 'class': 'input100'}),
+            'rules': forms.Textarea(attrs={'placeholder': 'قوانین ساختمان', 'class': 'input100'}),
         }
         labels = {
             'name': 'نام ساختمان',
@@ -63,15 +64,15 @@ class RegisterUnitForm(ModelForm):
         model = Unit
         fields = ['name', 'number_of_member']
         widgets = {
-            'name': forms.TextInput(attrs={'placeholder': 'نام واحد'}),
-            'number_of_member': forms.NumberInput(attrs={'placeholder': 'تعداد اعضای ساختمان'}),
+            'name': forms.TextInput(attrs={'placeholder': 'نام واحد', 'class': 'input100'}),
+            'number_of_member': forms.NumberInput(attrs={'placeholder': 'تعداد اعضای ساختمان', 'class': 'input100'}),
         }
 
 
 class DetectManagerForm(forms.Form):
     phone_number_of_manager = forms.IntegerField(
         label='شماره همراه مدیر ساختمان',
-        widget=forms.NumberInput(attrs={'placeholder': 'شماره مدیر ساختمان'})
+        widget=forms.NumberInput(attrs={'placeholder': 'شماره مدیر ساختمان', 'class': 'input100'})
     )
 
     def clean_phone_number_of_manager(self):

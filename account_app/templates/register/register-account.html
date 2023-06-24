@@ -1,14 +1,109 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">ثبت نام</button>
-</form>
-</body>
-</html>
+{% extends 'base_form/base.html' %}
+{% load static %}
+
+{% block title %}ثبت نام
+{% endblock %}
+
+{% block content %}
+    <div class="wrap-login100">
+
+        <!-- input form -->
+        <form method="post" class="login100-form validate-form">
+            {% csrf_token %}
+            <span class="login100-form-title">ثبت نام</span>
+
+            <!-- inputs -->
+            <div class="wrap-input100 validate-input" data-validate="لطفا عنوان ثبت نامی خود را وارد کنید!">
+                {{ form.is_manager }}
+
+                <span class="symbol-input100">
+                        <i>{{ form.is_manager.label }}</i>
+                    </span>
+            </div>
+
+            <div class="wrap-input100 validate-input" data-validate="لطفا شماره همراه خود را وارد کنید!">
+                {{ form.phone_number }}
+
+                <span class="focus-input100"></span>
+                <span class="symbol-input100">
+                        <i class="fa fa-mobile" aria-hidden="true"></i>
+                    </span>
+            </div>
+
+            <div class="wrap-input100 validate-input" data-validate="لطفا رمز عبور خود را وارد کنید!">
+                {{ form.password }}
+
+                <span class="focus-input100"></span>
+                <span class="symbol-input100">
+                        <i class="fa fa-lock" aria-hidden="true"></i>
+                    </span>
+            </div>
+
+            <div class="wrap-input100 validate-input" data-validate="لطفا تکرار رمز عبور خود را وارد کنید!">
+                {{ form.re_password }}
+
+                <span class="focus-input100"></span>
+                <span class="symbol-input100">
+                        <i class="fa fa-lock" aria-hidden="true"></i>
+                    </span>
+            </div>
+
+            <div class="wrap-input100 validate-input" data-validate="لطفا نام خود را وارد کنید!">
+                {{ form.first_name }}
+
+                <span class="focus-input100"></span>
+                <span class="symbol-input100">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                    </span>
+            </div>
+
+            <div class="wrap-input100 validate-input" data-validate="لطفا نام خانوادگی خود را وارد کنید!">
+                {{ form.last_name }}
+
+                <span class="focus-input100"></span>
+                <span class="symbol-input100">
+                        <i class="fa fa-user" aria-hidden="true"></i>
+                    </span>
+            </div>
+            <!-- / inputs -->
+
+            <!-- errors -->
+            {% if form.phone_number.errors %}
+                {% for error in form.phone_number.errors %}
+                    <p class="text-danger rtl txt2">{{ error }}</p>
+                {% endfor %}
+            {% endif %}
+
+            {% if form.re_password.errors %}
+                {% for error in form.re_password.errors %}
+                    <p class="text-danger rtl txt2">{{ error }}</p>
+                {% endfor %}
+            {% endif %}
+            <!-- / errors -->
+
+            <!-- login button-->
+            <div class="container-login100-form-btn">
+                <button class="login100-form-btn">ادامه</button>
+            </div>
+            <!-- / login button -->
+
+            <!-- register-->
+            <div class="text-center p-t-136">
+                <a class="txt2" href="{% url 'account_app_login:login_account' %}">
+                    <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+                    حساب کاربری دارم
+                </a>
+            </div>
+            <!-- / register-->
+
+        </form>
+        <!-- / input form -->
+
+        <!-- form image -->
+        <div class="login100-pic js-tilt" data-tilt>
+            <img src="{% static 'Login/pics/img-01.png' %}" alt="IMG">
+        </div>
+        <!-- / form image -->
+
+    </div>
+{% endblock %}
