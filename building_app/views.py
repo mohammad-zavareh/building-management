@@ -1,6 +1,6 @@
-from django.views.generic import ListView,UpdateView
+from django.views.generic import ListView, UpdateView
 
-from .models import Unit
+from .models import Unit, Building
 
 from buildingManagement.mixins import (
     ManagerRequiredMixin,
@@ -20,6 +20,17 @@ class UnitList(LoginRequiredMixin, ManagerRequiredMixin, ListView):
         building = self.request.user.building
         queryset = Unit.objects.filter(building=building)
         return queryset
+
+
+class UpdateBuilding(LoginRequiredMixin, ManagerRequiredMixin, UpdateView):
+    model = Building
+    fields = ['image', 'name', 'rules']
+    template_name = 'manager/update-building.html'
+    success_url = reverse_lazy('building_app:update_building')
+
+    def get_object(self, queryset=None):
+        building = Building.objects.filter(manager=self.request.user).first()
+        return building
 
 
 class UpdateUnit(LoginRequiredMixin, ManagerRequiredMixin, ManagerAccessOwnerUnitMixin, UpdateView):

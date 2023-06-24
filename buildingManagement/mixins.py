@@ -24,7 +24,7 @@ class ManagerRequiredMixin():
 
 class ManagerAccessOwnerUnitMixin():
     def dispatch(self, request, *args, **kwargs):
-        building = request.user.unit.building
+        building = request.user.building
         pk_units = Unit.objects.filter(building=building).values('pk')  # returned a list of dictionaries
         pk_list = convert_to_list(pk_units)
 

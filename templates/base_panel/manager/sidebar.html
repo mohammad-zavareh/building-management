@@ -17,7 +17,8 @@
                 <img src={{ request.user.building.image.url }} class="img-circle-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="{% url "dashboard_app:manager_dashboard" %}" class="d-block">{{ request.user.building.name }}</a>
+                <a href="{% url "dashboard_app:manager_dashboard" %}"
+                   class="d-block">{{ request.user.building.name }}</a>
             </div>
         </div>
 
@@ -113,6 +114,17 @@
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{% url 'building_app:update_building' %}"
+                               class="nav-link {% if request.path == '/manager-panel/update-building' %}active{% endif %}">
+                                <i class="fas fa-th nav-icon"></i>
+                                <p>
+                                    ویرایش ساختمان
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="{% url 'building_app:unit_list' %}"
