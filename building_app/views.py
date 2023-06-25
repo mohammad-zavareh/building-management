@@ -24,13 +24,20 @@ class UnitList(LoginRequiredMixin, ManagerRequiredMixin, ListView):
 
 class UpdateBuilding(LoginRequiredMixin, ManagerRequiredMixin, UpdateView):
     model = Building
-    fields = ['image', 'name', 'rules']
+    fields = ['image', 'name', 'max_unit', 'rules']
     template_name = 'manager/update-building.html'
     success_url = reverse_lazy('building_app:update_building')
 
     def get_object(self, queryset=None):
         building = Building.objects.filter(manager=self.request.user).first()
         return building
+
+    def form_valid(self, form):
+        if self.request.user.building.is_vip():
+            form.add_error('max_unit',
+                                 'شما در حال حاضر به دلیل عضو ویژه بودن قادر به ویرایش تعداد واحد های ساختمان نیستید!')
+            return super().form_invalid(form)
+        return super().form_valid(form)
 
 
 class UpdateUnit(LoginRequiredMixin, ManagerRequiredMixin, ManagerAccessOwnerUnitMixin, UpdateView):

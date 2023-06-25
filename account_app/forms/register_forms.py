@@ -3,12 +3,14 @@ from django.forms import ModelForm
 
 from account_app.models import User
 from building_app.models import Building, Unit
+from vip_service_app.models import VipService
 
 
 class RegisterAccountForm(ModelForm):
     re_password = forms.CharField(max_length=100,
                                   label='تکرار رمز عبور',
-                                  widget=forms.PasswordInput(attrs={'placeholder': ' تکرار رمز عبور', 'class': 'input100'})
+                                  widget=forms.PasswordInput(
+                                      attrs={'placeholder': ' تکرار رمز عبور', 'class': 'input100'})
                                   )
 
     class Meta:
@@ -45,9 +47,13 @@ class OtpForm(forms.Form):
 
 
 class RegisterBuildingForm(ModelForm):
+    max_unit = forms.ChoiceField(
+        choices=VipService.MAX_UNIT_CHOICE,
+        widget=forms.Select(attrs={'class': 'input100'})
+    )
     class Meta:
         model = Building
-        fields = ['name', 'image', 'rules']
+        fields = ['name', 'image', 'max_unit', 'rules']
         widgets = {
             'name': forms.TextInput(attrs={'placeholder': 'نام ساختمان', 'class': 'input100'}),
             'rules': forms.Textarea(attrs={'placeholder': 'قوانین ساختمان', 'class': 'input100'}),

@@ -41,20 +41,19 @@ def verify_password(request):
             user = authenticate(request, phone_number=phone_number, password=password)
 
             if user is not None:
-                user = user.first()
-
                 login(request, user)
                 del request.session['phone_number']
 
                 if user.is_manager:
                     building = Building.objects.filter(manager=user)
+                    print(building)
                     if not building.exists():
                         return redirect("account_app_register:register_building")
                     return redirect("dashboard_app:manager_dashboard")
                 else:
                     unit = Unit.objects.filter(resident=user)
                     if not unit.exists():
-                        return redirect("account_app_register:register_building")
+                        return redirect("account_app_register:register_unit")
                     return redirect("dashboard_app:resident_dashboard")
             else:
                 form.add_error('phone_number','کاربری با این شماره و رمز عبور وجود ندارد')

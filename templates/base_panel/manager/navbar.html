@@ -11,7 +11,7 @@
             <a href="#" class="nav-link">اعتبار: {{ request.user.building.credit|intcomma:False }}</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-            {% if request.user.unit.building.is_vip %}
+            {% if request.user.building.is_vip %}
                 <a class="nav-link">تا {{ request.user.building.until_vip_time }} روز دیگر ویژه هستید</a>
             {% else %}
                 <a href="{% url 'vip_service_app:vip_service_list' %}" class="nav-link">عضو ویژه نیستید</a>

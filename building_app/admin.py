@@ -9,9 +9,10 @@ class BuildingAdmin(admin.ModelAdmin):
     search_fields = ('name',)
 
     def image_tag(self, obj):
-        return format_html(f'<img src="{obj.image.url}" with="25px" height="25px"/>')
-
-    image_tag.short_description = True
+        if obj.image:
+            return format_html(f'<img src="{obj.image.url}" with="25px" height="25px"/>')
+        return format_html('ندارد')
+    image_tag.short_description = 'تصویر'
 
 
 class UnitAdmin(admin.ModelAdmin):

@@ -1,8 +1,8 @@
-{% extends 'manager/base-manager.html' %}
+{% extends 'base_panel/manager/base-manager.html' %}
 
-{% block browser_title %}ایجاد شارژ{% endblock %}
-{% block page_title %}ایجاد شارژ{% endblock %}
+{% block browser_title %}پرداخت{% endblock %}
+{% block page_title %}خرید پلن vip{% endblock %}
 
 {% block content %}
-    <button class="btn btn-success">پرداخت</button>
+    <a href="{% url 'vip_service_app:payment_vip_service' object.slug %}" class="btn btn-success">پرداخت</a>
 {% endblock %}

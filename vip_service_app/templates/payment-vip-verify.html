@@ -1,0 +1,13 @@
+{% extends 'base_panel/manager/base-manager.html' %}
+{% load humanize %}
+
+{% block browser_title %}وضغیت پرداخت{% endblock %}
+
+{% block content %}
+    <div class="alert {% if status == 100 %}alert-success{% else %}alert-danger{% endif %}" role="alert">
+        <h4 class="alert-heading">پرداخت با موفقیت انجام شد!</h4>
+        <p>الان دیگه تو یه ساختمون vip داری و میتونی بری عشق کنییاا</p>
+        <hr>
+        <a href="{% url 'dashboard_app:manager_dashboard' %}" class="alert-link" dideo-checked="true">داشبورد</a>
+    </div>
+{% endblock %}

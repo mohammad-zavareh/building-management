@@ -5,6 +5,7 @@ from .models import VipService
 
 class VipServiceAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', 'time', 'max_unit')
+    list_filter = ('name', 'time', 'max_unit',)
     prepopulated_fields = {'slug': ('name',)}
 
 

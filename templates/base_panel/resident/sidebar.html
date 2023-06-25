@@ -13,9 +13,13 @@
     <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+
+            {% if request.user.unit.building.image %}
             <div class="image">
-                <img src={{ request.user.unit.building.image.url }} class="img-circle-2" alt="User Image">
+                <img src="{{ request.user.unit.building.image.url }}" class="img-circle-2" alt="User Image">
             </div>
+            {% endif %}
+
             <div class="info">
                 <a href="{% url "dashboard_app:resident_dashboard" %}" class="d-block">{{ request.user.unit.name }}</a>
             </div>
