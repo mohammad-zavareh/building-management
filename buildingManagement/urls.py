@@ -29,10 +29,11 @@ urlpatterns = [
     path('manager-panel', include('charge_app.urls.manager_urls')),
     path('manager-panel', include('notification_app.urls.manager_urls')),
     path('manager-panel', include('payment_request_app.urls')),
+    path('manager-panel', include('poll_app.urls.manager_urls')),
 
     path('resident-panel', include('notification_app.urls.resident_urls')),
     path('resident-panel', include('charge_app.urls.resident_urls')),
-
+    path('resident-panel', include('poll_app.urls.resident_urls')),
 ]
 
 from django.conf import settings
