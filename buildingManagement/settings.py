@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'notification_app',
     'payment_request_app',
     'dashboard_app',
+    'poll_app',
 ]
 
 MIDDLEWARE = [
