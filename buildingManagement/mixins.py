@@ -5,6 +5,7 @@ from building_app.models import Unit
 from notification_app.models import Notification
 from charge_app.models import ServiceCharge, ServiceChargeStatus
 
+
 def convert_to_list(list_of_dictionary):
     result = []
     for dictionaries in list_of_dictionary:
@@ -20,6 +21,12 @@ class ManagerRequiredMixin():
             raise Http404('شما به این صفحه دسترسی ندارید')
         return super().dispatch(request, *args, **kwargs)
 
+
+class ResidentRequiredMixin():
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_manager:
+            raise Http404('شما به این صفحه دسترسی ندارید')
+        return super().dispatch(request, *args, **kwargs)
 
 
 class ManagerAccessOwnerUnitMixin():
@@ -57,6 +64,7 @@ class AccessOwnerChargeStatusMixin():
         else:
             raise Http404('شما به این صفحه دسترسی ندارید!')
 
+
 class AccessOwnerNotificationMixin():
     def dispatch(self, request, *args, **kwargs):
         building = request.user.unit.building
@@ -67,6 +75,7 @@ class AccessOwnerNotificationMixin():
             return super().dispatch(request, *args, **kwargs)
         else:
             raise Http404('شما به این صفحه دسترسی ندارید!')
+
 
 class SaveVisitMixin():
     def dispatch(self, request, *args, **kwargs):

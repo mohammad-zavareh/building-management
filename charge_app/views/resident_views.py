@@ -5,12 +5,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
 
-from  buildingManagement.mixins import AccessOwnerChargeStatusMixin
+from buildingManagement.mixins import AccessOwnerChargeStatusMixin,ResidentRequiredMixin
 from charge_app.models import ServiceChargeStatus
 from building_app.models import Building
 
 
-class ChargeList(LoginRequiredMixin, ListView):
+class ChargeList(LoginRequiredMixin,ResidentRequiredMixin, ListView):
     model = ServiceChargeStatus
     template_name = 'resident/charge-list.html'
 
@@ -21,7 +21,7 @@ class ChargeList(LoginRequiredMixin, ListView):
 
 
 
-class ChargeDetail(LoginRequiredMixin,AccessOwnerChargeStatusMixin, DetailView):
+class ChargeDetail(LoginRequiredMixin,ResidentRequiredMixin,AccessOwnerChargeStatusMixin, DetailView):
     model = ServiceChargeStatus
     template_name = 'resident/charge-detail.html'
 
@@ -29,6 +29,8 @@ class ChargeDetail(LoginRequiredMixin,AccessOwnerChargeStatusMixin, DetailView):
 
 @login_required
 def payment_charge(request, *args, **kwargs):  # send message function in zarinpal
+    if request.user.is_manager:
+        raise Http404('شما به این صفحه دسترسی ندارید!')
     unit = request.user.unit
     charge_status_pk = kwargs.get('charge_status_pk')
     service_charge_status = get_object_or_404(ServiceChargeStatus, id=charge_status_pk)
@@ -44,6 +46,8 @@ def payment_charge(request, *args, **kwargs):  # send message function in zarinp
 
 @login_required
 def payment_charge_verify(request, *args, **kwargs):
+    if request.user.is_manager:
+        raise Http404('شما به این صفحه دسترسی ندارید!')
     # if result.status == 100:
     charge_status_pk = kwargs.get('charge_status_pk')
     service_charge_status = get_object_or_404(ServiceChargeStatus, id=charge_status_pk)
