@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% if message %}
+    {{ message }}
+{% endif %}
+
+<h1>{{ object }}</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {% for option in object.polloption_set.all %}
+        <input type="radio" name="option" id="{{ option.id }}" value="{{ option }}" required
+               {% if option == pre_selected %}checked{% endif %}>
+        <label for="{{ option.id }}">{{ option }}</label>
+    {% endfor %}
+    <button type="submit">submit</button>
+</form>
+</body>
+</html>

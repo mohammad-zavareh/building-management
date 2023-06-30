@@ -1,4 +1,4 @@
-from django.views.generic import ListView, FormView
+from django.views.generic import ListView, FormView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from buildingManagement.mixins import ManagerRequiredMixin
 from django.urls import reverse_lazy
@@ -34,3 +34,11 @@ class CreatePoll(LoginRequiredMixin, ManagerRequiredMixin, FormView):
             else:
                 break
         return super(CreatePoll, self).form_valid(form)
+
+
+class ResultVote(LoginRequiredMixin, ManagerRequiredMixin, DetailView):
+    pass
+
+
+class ResultPoll(LoginRequiredMixin, ManagerRequiredMixin, DetailView):
+    pass

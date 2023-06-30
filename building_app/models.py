@@ -54,3 +54,6 @@ class Unit(models.Model):
     class Meta:
         verbose_name = 'واحد'
         verbose_name_plural = 'واحد ها'
+
+    def get_votes(self):
+        return self.votes.all()

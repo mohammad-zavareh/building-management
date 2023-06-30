@@ -14,6 +14,15 @@ class Poll(models.Model):
         verbose_name = ' سوال نظرسنجی'
         verbose_name_plural = ' سوالات نظرسنجی ها'
 
+    def get_votes(self):
+        votes = []
+        options = self.polloption_set.all()
+
+        for option in options:
+            for unit in option.units.all():
+                votes.append(unit)
+        return votes
+
 
 class PollOption(models.Model):
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE, verbose_name='سوال')
