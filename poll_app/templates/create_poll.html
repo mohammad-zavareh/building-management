@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post">
+    {% csrf_token %}
+    <div id="input-container">
+        {{ form }}
+    </div>
+    <button type="submit">submit</button>
+</form>
+    <button id="btn-add" onclick="addInput()">add</button>
+</body>
+<script>
+    const container = document.getElementById('input-container');
+    var maxInputAllowed = 6;
+    var inputCount = 3;
+
+    function addInput() {
+        inputCount++; // Increment input count by one
+        if (inputCount > maxInputAllowed) {
+            const btnAdd = document.getElementById('btn-add');
+            btnAdd.remove();
+            return;
+        }
+        let input = document.getElementById('id_option_' + inputCount);
+        input.type = 'text';
+    }
+</script>
+</html>

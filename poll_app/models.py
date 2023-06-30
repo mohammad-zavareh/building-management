@@ -8,7 +8,7 @@ class Poll(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name='زمان ایجاد')
 
     def __str__(self):
-        return self.question[0:7]
+        return self.question[0:20]
 
     class Meta:
         verbose_name = ' سوال نظرسنجی'
@@ -21,7 +21,7 @@ class PollOption(models.Model):
     option = models.CharField(max_length=50, verbose_name='گزینه')
 
     def __str__(self):
-        return self.option[0:7]
+        return self.option[0:20]
 
     class Meta:
         verbose_name = 'گزینه نظرسنجی'
