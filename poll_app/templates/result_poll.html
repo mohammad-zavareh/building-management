@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>result poll</title>
+</head>
+<body>
+{% for option in object.get_option %}
+    <a href="{% url 'poll_manager:result_vote' option.pk %}">{{ option }}</a>
+    {{ option.get_number_of_vote }}<br>
+{% endfor %}
+</body>
+</html>

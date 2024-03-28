@@ -36,9 +36,11 @@ class CreatePoll(LoginRequiredMixin, ManagerRequiredMixin, FormView):
         return super(CreatePoll, self).form_valid(form)
 
 
-class ResultVote(LoginRequiredMixin, ManagerRequiredMixin, DetailView):
-    pass
-
-
 class ResultPoll(LoginRequiredMixin, ManagerRequiredMixin, DetailView):
-    pass
+    model = Poll
+    template_name = 'result_poll.html'
+
+
+class ResultVote(LoginRequiredMixin, ManagerRequiredMixin, DetailView):
+    model = PollOption
+    template_name = 'result_vote.html'

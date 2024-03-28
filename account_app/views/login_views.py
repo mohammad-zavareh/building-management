@@ -56,7 +56,7 @@ def verify_password(request):
                         return redirect("account_app_register:register_unit")
                     return redirect("dashboard_app:resident_dashboard")
             else:
-                form.add_error('phone_number','کاربری با این شماره و رمز عبور وجود ندارد')
+                form.add_error('password','رمز عبور صحیح نیست')
 
     context = {'form': form}
     return render(request, 'login/verify-password.html', context)

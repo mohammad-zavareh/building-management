@@ -23,6 +23,9 @@ class Poll(models.Model):
                 votes.append(unit)
         return votes
 
+    def get_option(self):
+        return self.polloption_set.all()
+
 
 class PollOption(models.Model):
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE, verbose_name='سوال')
@@ -35,3 +38,10 @@ class PollOption(models.Model):
     class Meta:
         verbose_name = 'گزینه نظرسنجی'
         verbose_name_plural = 'گزینه های نظرسنجی'
+
+    def get_unit_that_vote(self):
+        return self.units.all()
+
+    def get_number_of_vote(self):
+        units = self.units
+        return len(units.all())
