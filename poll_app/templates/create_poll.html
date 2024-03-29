@@ -1,33 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<form method="post">
-    {% csrf_token %}
-    <div id="input-container">
-        {{ form }}
-    </div>
-    <button type="submit">submit</button>
-</form>
-    <button id="btn-add" onclick="addInput()">add</button>
-</body>
-<script>
-    const container = document.getElementById('input-container');
-    var maxInputAllowed = 6;
-    var inputCount = 3;
+{% extends 'base_panel/manager/base-manager.html' %}
+{% load static %}
 
-    function addInput() {
-        inputCount++; // Increment input count by one
-        if (inputCount > maxInputAllowed) {
-            const btnAdd = document.getElementById('btn-add');
-            btnAdd.remove();
-            return;
-        }
-        let input = document.getElementById('id_option_' + inputCount);
-        input.type = 'text';
-    }
-</script>
-</html>
+{% block browser_title %}ایجاد نظرسنجی{% endblock %}
+{% block page_title %}ایجاد نظرسنجی{% endblock %}
+
+{% block content %}
+    <div class="col-md-6">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title mb-0 float-left">ایجاد شارژ جدید</h3>
+            </div>
+            <div id="input-container">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="card-body">
+
+                        <div id="formfield">
+                            {{ form.question }}
+                            {{ form.option_1 }}
+                            {{ form.option_2 }}
+                        </div>
+
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-success btn-block">ایجاد</button>
+                        </div>
+                    </div>
+                </form>
+                <button id="btn-add" class="btn btn-primary" onclick="addInput()">افزودن گزینه</button>
+                <button id="btn-add" class="btn btn-warning" onclick="removeInput()">حذف گزینه</button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block js_file %}
+    <script src="{% static 'custom/js/custom_create_poll.js' %}"></script>
+{% endblock %}
