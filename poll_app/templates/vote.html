@@ -1,24 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-{% if message %}
-    {{ message }}
-{% endif %}
+{% extends 'base_panel/resident/base-resident.html' %}
 
-<h1>{{ object }}</h1>
+{% block browser_title %}صفحه رای{% endblock %}
+{% block page_title %}صفحه رای{% endblock %}
 
-<form method="post">
-    {% csrf_token %}
-    {% for option in object.polloption_set.all %}
-        <input type="radio" name="option" id="{{ option.id }}" value="{{ option }}" required
-               {% if option == pre_selected %}checked{% endif %}>
-        <label for="{{ option.id }}">{{ option }}</label>
-    {% endfor %}
-    <button type="submit">submit</button>
-</form>
-</body>
-</html>
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6">
+            {% if message %}
+                <div class="alert alert-info" role="alert">
+                    {{ message }}
+                </div>
+            {% endif %}
+
+            <div class="card" style="width: 18rem;">
+                <div class="card-header">
+                    {{ object.question }}
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    {% for option in object.polloption_set.all %}
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <div class="form-check">
+                                    <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="option" id="{{ option.id }}"
+                                               value="{{ option }}"
+                                               required
+                                               {% if option == pre_selected %}checked{% endif %}>{{ option.option }}
+                                    </label>
+                                </div>
+                            </li>
+                        </ul>
+                    {% endfor %}
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-light btn-block">ثبت</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
