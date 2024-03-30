@@ -1,0 +1,49 @@
+{% extends 'base_panel/manager/base-manager.html' %}
+
+{% block browser_title %}جزئیات رای ها{% endblock %}
+{% block page_title %}جزئیات رای ها{% endblock %}
+
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-12">
+
+
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-home-tab" data-toggle="tab" data-target="#nav-home"
+                            type="button" role="tab" aria-controls="nav-home" aria-selected="true">all
+                    </button>
+                    {% for option in object.get_option %}
+                        <button class="nav-link" id="nav-option-{{ forloop.counter }}-tab" data-toggle="tab"
+                                data-target="#nav-option-{{ forloop.counter }}"
+                                type="button" role="tab" aria-controls="nav-option-{{ forloop.counter }}"
+                                aria-selected="true">گزینه {{ forloop.counter }}
+                        </button>
+                    {% endfor %}
+                </div>
+            </nav>
+
+            <div class="tab-content" id="nav-tabContent">
+
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                        {% for unit in object.get_votes %}
+                            <li>{{ unit }}</li>
+
+                        {% endfor %}
+                    </div>
+
+                {% for option in object.get_option %}
+                    <div class="tab-pane fade show" id="nav-option-{{ forloop.counter }}" role="tabpanel"
+                         aria-labelledby="nav-option-{{ forloop.counter }}-tab">
+                        {% for unit in option.get_unit_that_vote %}
+                            <li>{{ unit }}</li>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+
+
+        </div>
+    </div>
+{% endblock %}

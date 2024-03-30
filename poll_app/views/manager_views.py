@@ -44,4 +44,4 @@ class ResultPoll(LoginRequiredMixin, ManagerRequiredMixin, DetailView):
 
 class DetailVote(LoginRequiredMixin, ManagerRequiredMixin, DetailView):
     model = Poll
-    template_name = 'result_vote.html'
+    template_name = 'detail_vote.html'
