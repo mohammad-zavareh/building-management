@@ -1,12 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>manager</title>
-</head>
-<body>
-{% for poll in object_list %}
-    {{ poll }}
-{% endfor %}
-</body>
-</html>
+{% extends 'base_panel/resident/base-resident.html' %}
+
+{% block browser_title %}لیست نظرسنجی ها{% endblock %}
+{% block page_title %}لیست نظرسنجی ها{% endblock %}
+
+
+{% block content %}
+    <div class="row">
+        {% for poll in poll_list %}
+            <div class="col-md-3">
+                <div class="card border-dark mb-3" style="max-width: 18rem;">
+                    <div class="card-body text-dark">
+                        <p class="card-text">{{ poll.question }}</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-dark">
+                        <a class="btn btn-block btn-light" href="{% url 'poll_resident:vote' poll.pk %}">شرکت در نظر سنجی</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
