@@ -10,6 +10,7 @@ from poll_app.forms import CreatePollForm
 class PollList(LoginRequiredMixin, ManagerRequiredMixin, ListView):
     model = Poll
     template_name = 'poll_list_manager.html'
+    paginate_by = 10
 
     def get_queryset(self):
         building = self.request.user.building
