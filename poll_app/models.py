@@ -2,6 +2,10 @@ from django.db import models
 from building_app.models import Building, Unit
 
 
+def weird_division(n, d):
+    return n / d if d else 0
+
+
 class Poll(models.Model):
     building = models.ForeignKey(Building, on_delete=models.CASCADE, verbose_name='ساختمان')
     question = models.CharField(max_length=200, verbose_name='سوال')
@@ -45,3 +49,9 @@ class PollOption(models.Model):
     def get_number_of_vote(self):
         units = self.units
         return len(units.all())
+
+    def get_percent_option(self):
+        total_votes = len(Poll.objects.get(polloption=self).get_votes())
+        option_votes = self.get_number_of_vote()
+
+        return round(weird_division(option_votes, total_votes) * 100)
