@@ -32,7 +32,7 @@
 
                                 <td><a href="{% url 'poll_manager:result_poll' poll.pk %}"
                                        class="btn btn-success btn-block">جزییات</a></td>
-                                <td><a href="#"
+                                <td><a href="{% url 'poll_manager:update_poll' poll.pk %}"
                                        class="btn btn-primary btn-block">ویرایش</a></td>
                             </tr>
                         {% endfor %}

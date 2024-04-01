@@ -1,4 +1,4 @@
-from django.views.generic import ListView, CreateView,UpdateView,DetailView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from django import forms
 
 from buildingManagement.mixins import (
@@ -9,7 +9,8 @@ from buildingManagement.mixins import (
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
-from charge_app.models import ServiceCharge,ServiceChargeStatus
+from charge_app.models import ServiceCharge, ServiceChargeStatus
+
 
 class ChargeList(LoginRequiredMixin, ManagerRequiredMixin, ListView):
     template_name = 'manager/charge-list.html'
@@ -27,20 +28,16 @@ class CreateCharge(LoginRequiredMixin, ManagerRequiredMixin, CreateView):
     fields = ["title", "description", 'amount', 'divide_amount', "category", "expire_time"]
     success_url = reverse_lazy('charge_app_manager:charge_list')
 
-
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
         form.fields['expire_time'].widget = forms.DateTimeInput(attrs={"type": "date"})
         return form
-
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.building = self.request.user.building
         self.object.save()
         return super().form_valid(form)
-
-
 
 
 class UpdateCharge(LoginRequiredMixin, ManagerRequiredMixin, AccessOwnerChargeMixin, UpdateView):

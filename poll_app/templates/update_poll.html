@@ -1,0 +1,48 @@
+{% extends 'base_panel/manager/base-manager.html' %}
+{% load static %}
+
+{% block browser_title %}ایجاد نظرسنجی{% endblock %}
+{% block page_title %}ایجاد نظرسنجی{% endblock %}
+
+{% block content %}
+    <div class="col-md-6">
+        {% if result_message %}
+            <div class="alert alert-info" role="alert">
+                {{ result_message }}
+            </div>
+        {% endif %}
+
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title mb-0 float-left">ویرایش نظرسنجی</h3>
+            </div>
+
+            <div id="input-container">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="card-body">
+                        <div id="formfield">
+                            <textarea type="text" placeholder="سوال" name="question"
+                                      class='textinput textInput form-control'>{{ poll.question }}</textarea>
+                            <br>
+                            {% for option in options %}
+                                <input type="text" value="{{ option.option }}" name="option_{{ forloop.counter }}"
+                                       class="textinput textInput form-control"
+                                       placeholder=" گزینه {{ forloop.counter }}">
+                                <br>
+                            {% endfor %}
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-success btn-block">ویرایش</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block js_file %}
+    <script src="{% static 'custom/js/custom_create_poll.js' %}"></script>
+{% endblock %}

@@ -1,7 +1,8 @@
-from django.views.generic import ListView, FormView, DetailView
+from django.views.generic import ListView, FormView, DetailView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from buildingManagement.mixins import ManagerRequiredMixin
 from django.urls import reverse_lazy
+from django.shortcuts import get_object_or_404, render, redirect
 
 from poll_app.models import Poll, PollOption
 from poll_app.forms import CreatePollForm
@@ -35,6 +36,46 @@ class CreatePoll(LoginRequiredMixin, ManagerRequiredMixin, FormView):
             else:
                 break
         return super(CreatePoll, self).form_valid(form)
+
+
+class UpdatePoll(LoginRequiredMixin, ManagerRequiredMixin, View):
+    template_name = 'update_poll.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        poll_pk = kwargs['pk']
+        poll = get_object_or_404(Poll, pk=poll_pk)
+        options = poll.get_option()
+        context['poll'] = poll
+        context['options'] = options
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        context = {}
+        poll_pk = kwargs['pk']
+        poll = get_object_or_404(Poll, pk=poll_pk)
+        options = poll.get_option()
+
+        form = request.POST
+
+        poll.question = form.get('question')
+        poll.save()
+
+        counter = 1
+        for option in options:
+            option_input = form.get(f'option_{counter}')
+            if option_input:
+                option.option = form.get(f'option_{counter}')
+                option.save()
+                context['result_message'] = 'ویرایش شد!'
+                counter += 1
+            else:
+                context['result_message'] = 'گزینه ها نمیتوانند خالی باشند'
+                break
+
+        context['poll'] = poll
+        context['options'] = options
+        return render(request, self.template_name, context)
 
 
 class ResultPoll(LoginRequiredMixin, ManagerRequiredMixin, DetailView):
