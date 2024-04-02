@@ -15,9 +15,9 @@
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
 
             {% if request.user.building.image %}
-            <div class="image">
-                <img src="{{ request.user.building.image.url }}" class="img-circle-2" alt="User Image">
-            </div>
+                <div class="image">
+                    <img src="{{ request.user.building.image.url }}" class="img-circle-2" alt="User Image">
+                </div>
             {% endif %}
 
             <div class="info">
@@ -83,6 +83,32 @@
                         </li>
                     </ul>
                 </li>   <!-- Notification -->
+
+                <li class="nav-item has-treeview menu-open">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                            نظرسنجی
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="{% url 'poll_manager:poll_list' %}"
+                               class="nav-link {% if request.path == '/manager-panel/poll-list' %}active{% endif %}">
+                                <i class="fas fa-th nav-icon"></i>
+                                <p>نظرسنجی ها</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'poll_manager:create_poll' %}"
+                               class="nav-link {% if request.path == '/manager-panel/create-poll' %}active{% endif %}">
+                                <i class="far fa-edit nav-icon"></i>
+                                <p>ایجاد نظرسنجی</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>   <!-- poll -->
 
                 <li class="nav-item has-treeview menu-open">
                     <a href="#" class="nav-link">

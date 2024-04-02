@@ -39,7 +39,6 @@
                 </div>
             </div>
 
-
             <div class="col-md-6">
                 <div class="card border-warning">
                     <h5 class="card-header text-center bg-warning">اعلانات خوانده نشده</h5>
@@ -65,6 +64,34 @@
                         <a class="text-secondary"
                            href="{% url 'notification_app_resident:notification_list' %}">نمایش
                             همه اعلانات</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card border-info">
+                    <h5 class="card-header text-center bg-primary">نظرسنجی هایی که شرکت نکردید</h5>
+                    <div class="card-body">
+                        {% if not_participated_polls %}
+                            {% for poll in not_participated_polls %}
+                                <div class="card">
+                                    <div class="card-body">
+                                        <a href="{% url 'poll_resident:vote' poll.pk %}"
+                                           class="text-dark">{{ poll.question }}</a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="card">
+                                <div class="card-body">
+                                    شما در همه نظرسنجی ها شرکت کردید
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer border-primary">
+                        <a class="text-secondary" href="{% url 'poll_resident:poll_list' %}">نمایش همه
+                            نظرسنجی ها</a>
                     </div>
                 </div>
             </div>

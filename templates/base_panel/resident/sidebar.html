@@ -15,9 +15,9 @@
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
 
             {% if request.user.unit.building.image %}
-            <div class="image">
-                <img src="{{ request.user.unit.building.image.url }}" class="img-circle-2" alt="User Image">
-            </div>
+                <div class="image">
+                    <img src="{{ request.user.unit.building.image.url }}" class="img-circle-2" alt="User Image">
+                </div>
             {% endif %}
 
             <div class="info">
@@ -32,15 +32,22 @@
                 <li class="nav-item">
                     <a href="{% url 'notification_app_resident:notification_list' %}"
                        class="nav-link {% if '/resident-panel/notification-list' in request.path %}active{% endif %}">
-                        <i class="fas fa-envelope nav-icon"></i>
+                        <i class="fas fa-th nav-icon"></i>
                         <p>لیست اعلانات</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{% url 'charge_app_resident:charge_list' %}"
                        class="nav-link {% if '/resident-panel/charge-list' in request.path %}active{% endif %}">
-                        <i class="fas fa-envelope nav-icon"></i>
+                        <i class="fas fa-th nav-icon"></i>
                         <p>لیست شارژ ها</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'poll_resident:poll_list' %}"
+                       class="nav-link {% if '/resident-panel/poll-list' in request.path %}active{% endif %}">
+                        <i class="fas fa-th nav-icon"></i>
+                        <p>لیست نظرسنجی ها</p>
                     </a>
                 </li>
             </ul>
