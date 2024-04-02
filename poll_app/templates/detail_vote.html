@@ -6,13 +6,13 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
 
 
             <nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist">
                     <button class="nav-link active" id="nav-home-tab" data-toggle="tab" data-target="#nav-home"
-                            type="button" role="tab" aria-controls="nav-home" aria-selected="true">all
+                            type="button" role="tab" aria-controls="nav-home" aria-selected="true">شرکت کنندگان
                     </button>
                     {% for option in object.get_option %}
                         <button class="nav-link" id="nav-option-{{ forloop.counter }}-tab" data-toggle="tab"
@@ -26,16 +26,22 @@
 
             <div class="tab-content" id="nav-tabContent">
 
-                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                        {% for unit in object.get_votes %}
-                            <li>{{ unit }}</li>
+                <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                    {% for unit in object.get_votes %}
+                        <li>{{ unit.name }}</li>
 
-                        {% endfor %}
-                    </div>
+                    {% endfor %}
+                </div>
 
                 {% for option in object.get_option %}
                     <div class="tab-pane fade show" id="nav-option-{{ forloop.counter }}" role="tabpanel"
                          aria-labelledby="nav-option-{{ forloop.counter }}-tab">
+
+                        <div class="alert alert-light" role="alert">
+                            <h4 class="alert-heading">آرای گزینه</h4>
+                            <p>{{ option}}</p>
+                        </div>
+
                         {% for unit in option.get_unit_that_vote %}
                             <li>{{ unit }}</li>
                         {% endfor %}

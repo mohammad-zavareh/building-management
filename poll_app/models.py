@@ -24,7 +24,7 @@ class Poll(models.Model):
 
         for option in options:
             for unit in option.units.all():
-                votes.append(unit.name)
+                votes.append(unit)
         return votes
 
     def get_option(self):

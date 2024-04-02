@@ -43,9 +43,12 @@ class Vote(LoginRequiredMixin, ResidentRequiredMixin, DetailView):
             option = PollOption.objects.filter(poll=self.object, option=selected_option).first()
             unit = request.user.unit
 
-            if unit not in self.object.get_votes():
+            participated_polls = Poll.objects.filter(polloption__units=unit)
+
+            if participated_polls:
+                context['message'] = 'شما از قبل در این نظر سنجی شرکت کرده اید!'
+                return self.render_to_response(context=context)
+            else:
                 option.units.add(unit)
                 context['message'] = 'ثبت شد!'
-            else:
-                context['message'] = 'شما از قبل در این نظر سنجی شرکت کرده اید!'
-            return self.render_to_response(context=context)
+                return self.render_to_response(context=context)

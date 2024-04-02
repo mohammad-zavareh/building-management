@@ -2,7 +2,7 @@ var formfield = document.getElementById('formfield');
 
 function addInput() {
     var input_tags = formfield.getElementsByTagName('input');
-    if (input_tags.length > 6) {
+    if (input_tags.length >= 6) {
         alert('حداکثر گزینه ها 6 عدد میباشد');
         return;
     }
@@ -19,7 +19,7 @@ function addInput() {
 
 function removeInput() {
     var input_tags = formfield.getElementsByTagName('input');
-    if (input_tags.length > 3) {
+    if (input_tags.length >= 3) {
         formfield.removeChild(input_tags[(input_tags.length) - 1]);
     }else {
         alert('حداقل گزینه ها 2 عدد میباشد')
