@@ -21,7 +21,7 @@
             {% endif %}
 
             <div class="info">
-                <a href="{% url "dashboard_app:resident_dashboard" %}" class="d-block">{{ request.user.unit.name }}</a>
+                <a href="{% url "dashboard_app:resident_dashboard" %}" id="unit-name" class="d-block">{{ request.user.unit.name }}</a>
             </div>
         </div>
 

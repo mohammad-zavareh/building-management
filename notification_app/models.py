@@ -12,8 +12,19 @@ class Notification(models.Model):
     hits = models.ManyToManyField(Unit, verbose_name='بازدید', blank=True, null=True)
 
     def __str__(self):
-        return self.title
+        return self.title[0:20]
 
     class Meta:
         verbose_name = 'اعلان'
         verbose_name_plural = 'اعلانات'
+
+
+class Comment(models.Model):
+    notification = models.ForeignKey(Notification, verbose_name='اعلان', on_delete=models.CASCADE)
+    unit = models.ForeignKey(Unit, verbose_name='واحد', on_delete=models.CASCADE)
+    text = models.CharField(max_length=200, verbose_name='متن')
+    created = models.DateTimeField(default=timezone.now, verbose_name='زمان ایجاد')
+
+    class Meta:
+        verbose_name = 'نظر'
+        verbose_name_plural = 'نظرات'

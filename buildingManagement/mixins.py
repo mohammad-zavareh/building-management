@@ -83,7 +83,6 @@ class SaveVisitMixin():
         notification_pk = kwargs['pk']
         notification = get_object_or_404(Notification, pk=notification_pk)
 
-        print(notification.hits.all())
 
         if unit not in notification.hits.all():
             notification.hits.add(unit)
