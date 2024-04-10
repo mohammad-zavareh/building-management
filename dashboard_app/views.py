@@ -23,7 +23,8 @@ class ResidentDashboard(LoginRequiredMixin, ResidentRequiredMixin, TemplateView)
 
         not_participated_polls = Poll.objects.filter(Q(building=building), ~Q(polloption__units=unit))
 
-        data['unpaid_charges'] = ServiceChargeStatus.objects.filter(unit=unit, is_paid=False)[0:3]
+        data['unpaid_charges'] = ServiceChargeStatus.objects.filter(Q(unit=unit), Q(status='unpaid_reject') |
+                                                                    Q(status='unpaid_waiting') | Q(status='unpaid'))[0:3]
         data['not_participated_polls'] = not_participated_polls
         data['unseen_notifications'] = Notification.objects.filter(Q(building_id=building),
                                                                    ~Q(hits=unit)).order_by('-created')[0:3]

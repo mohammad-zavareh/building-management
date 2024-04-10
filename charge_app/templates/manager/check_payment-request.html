@@ -1,0 +1,43 @@
+{% extends 'base_panel/manager/base-manager.html' %}
+{% load crispy_forms_tags %}
+
+{% block browser_title %}بررسی رسید پرداخت{% endblock %}
+{% block page_title %}بررسی رسید پرداخت ها{% endblock %}
+
+{% block content %}
+    {% if object_list %}
+        <div class="row">
+
+                {% for object in object_list %}
+                    <div class="col-md-4">
+                        <div class="card">
+                            <img class="card-img-top" src="{{ object.receipt.url }}" alt="image receipt"
+                                 style="width: 250px;">
+                            <div class="card-body">
+                                <h5>{{ object.unit }}</h5>
+                                <hr>
+                                <p class="card-text">شماره همراه واحد: {{ object.unit.resident.phone_number }}</p>
+                                <p class="card-text"><small class="text-muted">ارسال
+                                    در {{ object.pay_time|timesince }}
+                                    پیش</small></p>
+                            </div>
+
+                            <form method="post">
+                                {% csrf_token %}
+                                <ul class="list-group list-group-flush">
+                                    <input type="hidden" name="object_pk" value="{{ object.pk }}">
+                                    <input class="btn btn-block btn-light" type="submit" name="accept" value="تایید">
+                                    <input class="btn btn-block btn-light" type="submit" name="reject" value="رد کردن">
+                                </ul>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            هنوز درخواستی وجود ندارد!
+        </div>
+    {% endif %}
+{% endblock %}

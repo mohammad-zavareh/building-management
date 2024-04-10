@@ -23,8 +23,8 @@ class Category(models.Model):
         verbose_name_plural = 'دسته بندی ها'
 
 
-class ServiceCharge(models.Model):  # divide_members   divide_units
-    divide_type = [
+class ServiceCharge(models.Model):
+    divide_type = [  # divide_members   divide_units
         ('member', 'تقسیم بر تعداد ساکنین'),
         ('unit', 'تقسیم بر تعداد واحد ها')
     ]
@@ -34,7 +34,7 @@ class ServiceCharge(models.Model):  # divide_members   divide_units
     description = models.TextField(blank=True, null=True, verbose_name='توضیحات')
     amount = models.IntegerField(default=0, verbose_name='مبلغ')
     divide_amount = models.CharField(max_length=30, choices=divide_type, verbose_name='تقسیم مبلغ')
-    category = models.ForeignKey(Category,on_delete=models.CASCADE, verbose_name='دسته بندی')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='دسته بندی')
     expire_time = models.DateTimeField(verbose_name='تاریخ انقضا')
 
     def __str__(self):
@@ -57,11 +57,18 @@ class ServiceCharge(models.Model):  # divide_members   divide_units
 
 
 class ServiceChargeStatus(models.Model):
+    STATUS_CHOICE = (
+        ('online_paid', 'پرداخت شده - آنلاین'),
+        ('offline_paid', 'پرداخت شده - آفلاین'),
+        ('unpaid', 'پرداخت نشده'),
+        ('unpaid_waiting', 'پرداخت نشده - در انتظار بررسی'),
+        ('unpaid_reject', 'پرداخت نشده - رد شده'),
+    )
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE, verbose_name='واحد')
     service_charge = models.ForeignKey(ServiceCharge, on_delete=models.CASCADE, verbose_name='شارژ خدمات')
-
     amount = models.IntegerField(verbose_name='مبلغ قابل پرداخت واحد')
-    is_paid = models.BooleanField(default=False, verbose_name='پرداخت شده/نشده')
+    status = models.CharField(choices=STATUS_CHOICE, verbose_name='وضعیت پرداخت', max_length=50, default='unpaid')
+    receipt = models.ImageField(upload_to='receipt', blank=True, null=True, verbose_name='رسید کارت به کارت')
     pay_time = models.DateTimeField(blank=True, null=True, verbose_name='تاریخ پرداخت')
 
     def __str__(self):
@@ -70,6 +77,30 @@ class ServiceChargeStatus(models.Model):
     class Meta:
         verbose_name = 'وضعیت شارژ خدمات'
         verbose_name_plural = 'وضعیت شارژهای خدمات'
+
+    def status_is_waiting(self):
+        if self.status == 'unpaid_waiting':
+            return True
+        else:
+            return False
+
+    def status_is_reject(self):
+        if self.status == 'unpaid_reject':
+            return True
+        else:
+            return False
+
+    def is_paid(self):
+        if self.status in ['online_paid', 'offline_paid']:
+            return True
+        else:
+            return False
+
+    def unpaid(self):
+        if self.status in ['unpaid', 'unpaid_waiting', 'unpaid_reject']:
+            return True
+        else:
+            return False
 
 
 # signal for create ServiceChargeStatus object

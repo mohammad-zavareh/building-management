@@ -51,17 +51,24 @@ class RegisterBuildingForm(ModelForm):
         choices=VipService.MAX_UNIT_CHOICE,
         widget=forms.Select(attrs={'class': 'input100'})
     )
+
     class Meta:
         model = Building
-        fields = ['name', 'image', 'max_unit', 'rules']
+        fields = ['name', 'image', 'max_unit', 'rules', 'card_type', 'card_number', 'owner_card']
         widgets = {
             'name': forms.TextInput(attrs={'placeholder': 'نام ساختمان', 'class': 'input100'}),
             'rules': forms.Textarea(attrs={'placeholder': 'قوانین ساختمان', 'class': 'input100'}),
+            'card_type': forms.Textarea(attrs={'placeholder': 'نوع کارت', 'class': 'input100'}),
+            'card_number': forms.NumberInput(attrs={'placeholder': 'شماره کارت', 'class': 'input100'}),
+            'owner_card': forms.NumberInput(attrs={'placeholder': 'صاحب کارت', 'class': 'input100'}),
         }
         labels = {
             'name': 'نام ساختمان',
             'image': 'تصویر ساختمان',
-            'rules': 'قوامین ساختمان'
+            'rules': 'قوانین ساختمان',
+            'card_type': 'نوع کارت',
+            'card_number': 'شماره کارت',
+            'owner_card': 'صاحب کارت',
         }
 
 

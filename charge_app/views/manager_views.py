@@ -1,5 +1,8 @@
-from django.views.generic import ListView, CreateView, UpdateView, DetailView
+from django.http import Http404
+from django.views.generic import ListView, CreateView, UpdateView, DetailView, View
 from django import forms
+from django.shortcuts import render, get_object_or_404
+from django.db.models import Q
 
 from buildingManagement.mixins import (
     ManagerRequiredMixin,
@@ -57,3 +60,41 @@ class ChargeStatus(LoginRequiredMixin, ManagerRequiredMixin, AccessOwnerChargeMi
         context['status_list'] = ServiceChargeStatus.objects.filter(service_charge_id=pk)
         context['charge_name'] = ServiceCharge.objects.get(id=pk)
         return context
+
+
+class CheckPaymentRequest(LoginRequiredMixin, ManagerRequiredMixin, View):
+    template_name = 'manager/check_payment-request.html'
+
+    def get(self, request, *args, **kwargs):
+        context = {}
+        building = request.user.unit.building
+        object_list = ServiceChargeStatus.objects.filter(Q(unit__building=building),
+                                                         Q(status='unpaid_waiting') | Q(status='unpaid_reject'))
+        context['object_list'] = object_list
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        context = {}
+        object_pk = request.POST.get('object_pk')
+        reject = request.POST.get('reject')
+        accept = request.POST.get('accept')
+        service_charge_status = get_object_or_404(ServiceChargeStatus, pk=object_pk)
+
+        if service_charge_status.unit.building.manager != request.user:  # Only the owner can change the status
+            raise Http404('شما به این صفحه دسترسی ندارید')
+
+        if accept:
+            service_charge_status.status = 'offline_paid'
+            service_charge_status.save()
+        elif reject:
+            service_charge_status.status = 'unpaid_reject'
+            service_charge_status.save()
+        else:
+            raise Http404()
+
+        building = request.user.unit.building
+        object_list = ServiceChargeStatus.objects.filter(Q(unit__building=building),
+                                                         Q(status='unpaid_waiting') | Q(status='unpaid_reject'))
+        context['object_list'] = object_list
+        return render(request, self.template_name, context)
+

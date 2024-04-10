@@ -1,4 +1,5 @@
 {% extends 'base_panel/resident/base-resident.html' %}
+{% load static %}
 {% load humanize %}
 
 {% block browser_title %}نمایش شارژ{% endblock %}
@@ -14,17 +15,102 @@
                         <img src="{{ object.service_charge.category.image.url }}"
                              alt="{{ object.service_charge.category.image.url }}" class="img-thumbnail img-size-64">
                     </div>
+
                     <h1 class="display-4">{{ object.service_charge.title }}</h1>
                     <p class="lead">{{ object.service_charge.description|safe }}</p>
                     <hr class="my-4">
-                    <p>
-                        {% if object.pay_time %}
-                            پرداخت شده{{ object.pay_time|timesince }}پیش
+
+                    {% if object.unpaid %}
+                        {% if object.status_is_waiting %}
+                            <p>شما یک رسید ارسال کرده اید. تا بررسی مدیر منتظر بمانید</p>
                         {% else %}
-                            <a href="{% url 'charge_app_resident:payment_charge' object.pk %}"
-                               class="btn btn-success btn-lg" role="button">پرداخت</a>
+                            {% if object.status_is_reject %}
+                                <p>رسید شما توسط مدیر رد شد!</p>
+                                <p>ممکن است تصویر رسید واضح نباشد</p>
+                            {% endif %}
+                            <div class="form-control">
+                                <form method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <input type="file" name="receipt">
+                                    <button type="submit">ارسال رسید</button>
+                                </form>
+                            </div>
                         {% endif %}
-                    </p>
+
+                        <hr class="my-4">
+                        {% if not object.status_is_waiting %}
+                            <p>
+                                <a href="{% url 'charge_app_resident:payment_charge' object.pk %}"
+                                   class="btn btn-success btn-lg" role="button">پرداخت انلاین</a>
+                            </p>
+                        {% endif %}
+                    {% else %}
+                        <p>این قبض در {{ object.pay_time|timesince }} پیش پرداخت شده است</p>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#onlinPay">
+        online
+    </button>
+
+    <!-- online -->
+    <div class="modal fade" id="onlinPay" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">پرداخت آنلاین</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    با درگاه زیرن پال
+                    با مبلغ فلان
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+                    <a href="#" class="btn btn-primary">پرداخت</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#offlinePay">
+        offline
+    </button>
+    <!-- offline -->
+    <div class="modal fade" id="offlinePay" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">کارت به کارت</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        {% with 'bank_type/'|add:request.user.unit.building.card_type|add:'.png' as bank_type %}
+                            <img src="{% static bank_type %}" style="width:500px;">
+                        {% endwith %}
+
+                        {{ request.user.unit.building.card_number }}
+                        {{ request.user.unit.building.owner_card }}
+                        به مبلغ{{ object.amount }}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
                 </div>
             </div>
         </div>
