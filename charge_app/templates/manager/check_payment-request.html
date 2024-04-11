@@ -8,36 +8,47 @@
     {% if object_list %}
         <div class="row">
 
-                {% for object in object_list %}
-                    <div class="col-md-4">
-                        <div class="card">
-                            <img class="card-img-top" src="{{ object.receipt.url }}" alt="image receipt"
+            {% for object in object_list %}
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="position-relative">
+                            <img class="card-img-top img-fluid" src="{{ object.receipt.url }}" alt="image receipt"
                                  style="width: 250px;">
-                            <div class="card-body">
-                                <h5>{{ object.unit }}</h5>
-                                <hr>
-                                <p class="card-text">شماره همراه واحد: {{ object.unit.resident.phone_number }}</p>
-                                <p class="card-text"><small class="text-muted">ارسال
-                                    در {{ object.pay_time|timesince }}
-                                    پیش</small></p>
+                            <div class="ribbon-wrapper ribbon-xl">
+                                <div class="ribbon bg-{% if object.status == 'unpaid_waiting' %}warning{% elif object.status == 'unpaid_reject' %}danger{% endif %} text-lg">
+                                    {% if object.status == 'unpaid_waiting' %}
+                                        در انتظار بررسی
+                                    {% elif object.status == 'unpaid_reject' %}
+                                        رد شده
+                                    {% endif %}
+                                </div>
                             </div>
-
-                            <form method="post">
-                                {% csrf_token %}
-                                <ul class="list-group list-group-flush">
-                                    <input type="hidden" name="object_pk" value="{{ object.pk }}">
-                                    <input class="btn btn-block btn-light" type="submit" name="accept" value="تایید">
-                                    <input class="btn btn-block btn-light" type="submit" name="reject" value="رد کردن">
-                                </ul>
-                            </form>
                         </div>
+                        <div class="card-body">
+                            <h5>{{ object.unit }}</h5>
+                            <hr>
+                            <p class="card-text">شماره همراه واحد: {{ object.unit.resident.phone_number }}</p>
+                            <p class="card-text"><small class="text-muted">ارسال
+                                در {{ object.pay_time|timesince }}
+                                پیش</small></p>
+                        </div>
+
+                        <form method="post">
+                            {% csrf_token %}
+                            <ul class="list-group list-group-flush">
+                                <input type="hidden" name="object_pk" value="{{ object.pk }}">
+                                <input class="btn btn-block btn-light" type="submit" name="accept" value="تایید">
+                                <input class="btn btn-block btn-light" type="submit" name="reject" value="رد کردن">
+                            </ul>
+                        </form>
                     </div>
-                {% endfor %}
+                </div>
+            {% endfor %}
 
         </div>
     {% else %}
         <div class="alert alert-info" role="alert">
-            هنوز درخواستی وجود ندارد!
+            در حال حاضر درخواستی وجود ندارد!
         </div>
     {% endif %}
 {% endblock %}

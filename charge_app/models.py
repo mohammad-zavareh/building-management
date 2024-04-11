@@ -102,6 +102,9 @@ class ServiceChargeStatus(models.Model):
         else:
             return False
 
+    def get_verbose_status(self):
+        return dict(self.STATUS_CHOICE)[self.status]
+
 
 # signal for create ServiceChargeStatus object
 

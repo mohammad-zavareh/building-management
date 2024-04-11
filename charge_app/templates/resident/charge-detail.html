@@ -5,6 +5,9 @@
 {% block browser_title %}نمایش شارژ{% endblock %}
 {% block page_title %}نمایش شارژها{% endblock %}
 
+{% block css_file %}
+    <link rel="stylesheet" href={% static "custom/css/offline_payment_charge.css" %}>
+{% endblock %}
 
 {% block content %}
     <div class="container">
@@ -28,89 +31,110 @@
                                 <p>رسید شما توسط مدیر رد شد!</p>
                                 <p>ممکن است تصویر رسید واضح نباشد</p>
                             {% endif %}
-                            <div class="form-control">
-                                <form method="post" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    <input type="file" name="receipt">
-                                    <button type="submit">ارسال رسید</button>
-                                </form>
+                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#offlinePay">
+                                کارت به کارت
+                            </button>
+                            <!-- offline -->
+                            <div class="modal fade" id="offlinePay" tabindex="-1" role="dialog"
+                                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                    <div class="container-fluid">
+                                        <div class="text-center">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLongTitle">کارت به کارت</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="text-center">
+                                                        <div id="container-bank-card">
+                                                            {% with 'bank_type/'|add:request.user.unit.building.card_type|add:'.png' as bank_type %}
+                                                                <img src="{% static bank_type %}" style="width:100%;">
+                                                            {% endwith %}
+                                                            <div id="card-number">
+                                                                {{ card_number }}
+                                                            </div>
+                                                            <div id="owner-card">
+                                                                {{ request.user.unit.building.owner_card }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="amount">
+
+                                                            <h4> مبلغ پرداختی <span
+                                                                    class="badge badge-pill badge-primary">{{ object.amount }}</span>
+                                                            </h4>
+                                                        </div>
+                                                        <div class="form-control">
+                                                            <form method="post" enctype="multipart/form-data">
+                                                                {% csrf_token %}
+                                                                <input type="file" name="receipt">
+                                                                <br><br>
+                                                                <button type="submit" class="btn btn-success">ارسال
+                                                                    رسید
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer ">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">بستن
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         {% endif %}
 
-                        <hr class="my-4">
+
                         {% if not object.status_is_waiting %}
-                            <p>
-                                <a href="{% url 'charge_app_resident:payment_charge' object.pk %}"
-                                   class="btn btn-success btn-lg" role="button">پرداخت انلاین</a>
-                            </p>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#onlinPay">
+                                پرداخت آنلاین
+                            </button>
+
+                            <!-- online -->
+                            <div class="modal fade" id="onlinPay" tabindex="-1" role="dialog"
+                                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">پرداخت آنلاین</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="card border-warning mb-3" style="max-width: 35rem;">
+                                                <div class="card-body text-black">
+                                                    <div class="row">
+                                                        <img src="{% static 'custom/img/zarinpal-logo.png' %}"
+                                                             class="img-thumbnail img-size-64"
+                                                             alt="zarinpal-logo">
+                                                        <h6> پرداخت امن با درگاه زرین پال </h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن
+                                            </button>
+                                            <a href="{% url 'charge_app_resident:payment_charge' object.pk %}"
+                                               class="btn btn-primary">پرداخت</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         {% endif %}
                     {% else %}
                         <p>این قبض در {{ object.pay_time|timesince }} پیش پرداخت شده است</p>
                     {% endif %}
 
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#onlinPay">
-        online
-    </button>
-
-    <!-- online -->
-    <div class="modal fade" id="onlinPay" tabindex="-1" role="dialog"
-         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">پرداخت آنلاین</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    با درگاه زیرن پال
-                    با مبلغ فلان
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
-                    <a href="#" class="btn btn-primary">پرداخت</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#offlinePay">
-        offline
-    </button>
-    <!-- offline -->
-    <div class="modal fade" id="offlinePay" tabindex="-1" role="dialog"
-         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">کارت به کارت</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="text-center">
-                        {% with 'bank_type/'|add:request.user.unit.building.card_type|add:'.png' as bank_type %}
-                            <img src="{% static bank_type %}" style="width:500px;">
-                        {% endwith %}
-
-                        {{ request.user.unit.building.card_number }}
-                        {{ request.user.unit.building.owner_card }}
-                        به مبلغ{{ object.amount }}
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
                 </div>
             </div>
         </div>

@@ -1,0 +1,22 @@
+#container-bank-card {
+    position: relative;
+    text-align: center;
+    color: black;
+}
+
+#card-number {
+    font-weight: bold;
+    font-size: 35px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+#owner-card {
+    font-weight: bold;
+    position: absolute;
+    top: 370px;
+    right: 156px;
+}

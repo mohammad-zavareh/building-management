@@ -35,9 +35,9 @@
                                 <td>{{ object.amount|intcomma }}</td>
                                 <td>
                                     {% if object.is_paid %}
-                                        <span class="right badge badge-success">پرداخت شده</span>
+                                        <span class="right badge badge-success">{{ object.get_verbose_status }}</span>
                                     {% else %}
-                                        <span class="right badge badge-danger">پرداخت نشده</span>
+                                        <span class="right badge badge-danger">{{ object.get_verbose_status }}</span>
                                     {% endif %}
                                 </td>
                                 <td>

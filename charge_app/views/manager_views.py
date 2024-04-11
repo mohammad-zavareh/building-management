@@ -57,8 +57,25 @@ class ChargeStatus(LoginRequiredMixin, ManagerRequiredMixin, AccessOwnerChargeMi
     def get_context_data(self, *args, **kwargs):
         pk = self.kwargs['pk']
         context = super(ChargeStatus, self).get_context_data(*args, **kwargs)
-        context['status_list'] = ServiceChargeStatus.objects.filter(service_charge_id=pk)
+        statuses = ServiceChargeStatus.objects.filter(service_charge_id=pk)
+        context['status_list'] = statuses
         context['charge_name'] = ServiceCharge.objects.get(id=pk)
+
+        sum_offline_paid = 0
+        sum_online_paid = 0
+        sum_unpaid = 0
+        for status in statuses:
+            if status.status == 'offline_paid':
+                sum_offline_paid += status.amount
+            elif status.status == 'online_paid':
+                sum_online_paid += status.amount
+            else:
+                sum_unpaid += status.amount
+
+        context['sum_offline_paid'] = sum_offline_paid
+        context['sum_online_paid'] = sum_online_paid
+        context['sum_unpaid'] = sum_unpaid
+        context['sum_paid'] = sum_offline_paid + sum_online_paid
         return context
 
 

@@ -55,6 +55,13 @@
                                 <p>ایجاد شارژ</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{% url 'charge_app_manager:check_payment_receipt' %}"
+                               class="nav-link {% if request.path == '/manager-panel/check-payment-receipt' %}active{% endif %}">
+                                <i class="far fa-check-square nav-icon"></i>
+                                <p>بررسی رسید ها</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>   <!-- Charge -->
 

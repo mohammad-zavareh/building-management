@@ -27,6 +27,8 @@ class ChargeDetail(LoginRequiredMixin, ResidentRequiredMixin, AccessOwnerChargeS
         context = {}
         service_charge_status = get_object_or_404(ServiceChargeStatus, pk=kwargs['pk'])
 
+        n = str(request.user.unit.building.card_number)
+        context['card_number'] = f'{n[0:4]}-{n[4:8]}-{n[8:12]}-{n[12:16]}'
         context['object'] = service_charge_status
         return render(request, self.template_name, context)
 
