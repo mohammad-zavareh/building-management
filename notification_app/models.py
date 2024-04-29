@@ -18,6 +18,12 @@ class Notification(models.Model):
         verbose_name = 'اعلان'
         verbose_name_plural = 'اعلانات'
 
+    def get_sum_comments(self):
+        return len(self.comment_set.all())
+
+    def get_sum_hits(self):
+        return len(self.hits.all())
+
 
 class Comment(models.Model):
     notification = models.ForeignKey(Notification, verbose_name='اعلان', on_delete=models.CASCADE)

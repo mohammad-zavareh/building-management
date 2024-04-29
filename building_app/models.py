@@ -53,6 +53,9 @@ class Building(models.Model):
         until_time = self.vip_time - timezone.now()
         return until_time.days
 
+    def get_sum_units(self):
+        return len(self.unit_set.all())
+
 
 class Unit(models.Model):
     building = models.ForeignKey(Building, on_delete=models.CASCADE, verbose_name='برای ساختمان')

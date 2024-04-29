@@ -23,7 +23,7 @@ class CreatePaymentRequest(LoginRequiredMixin, ManagerRequiredMixin, CreateView)
     model = RequestPayment
     template_name = 'manager/create-request-payment.html'
     fields = ['sheba_number', 'amount']
-    success_url = reverse_lazy('building_app_manager:payment_request_list')
+    success_url = reverse_lazy('payment_request_app:payment_request_list')
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)

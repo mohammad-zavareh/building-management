@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 
 from django.db.models.signals import post_save
 
@@ -35,6 +36,7 @@ class ServiceCharge(models.Model):
     amount = models.IntegerField(default=0, verbose_name='مبلغ')
     divide_amount = models.CharField(max_length=30, choices=divide_type, verbose_name='تقسیم مبلغ')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='دسته بندی')
+    created = models.DateTimeField(auto_now_add=True, verbose_name='تاریخ ایجاد')
     expire_time = models.DateTimeField(verbose_name='تاریخ انقضا')
 
     def __str__(self):
@@ -54,6 +56,15 @@ class ServiceCharge(models.Model):
 
     is_active.boolean = True
     is_active.short_description = 'فعال'
+
+    def get_sum_unpaid_status_charge(self):
+        qs = self.servicechargestatus_set.all().filter(Q(status='unpaid') | Q(status='unpaid_waiting') |
+                                                       Q(status='unpaid_reject'))
+        return len(qs)
+
+    def get_sum_paid_status_charge(self):
+        qs = self.servicechargestatus_set.all().filter(Q(status='online_paid') | Q(status='offline_paid'))
+        return len(qs)
 
 
 class ServiceChargeStatus(models.Model):

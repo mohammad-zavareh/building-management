@@ -1,13 +1,298 @@
 {% extends 'base_panel/manager/base-manager.html' %}
-
+{% load static %}
+{% load humanize %}
 
 {% block browser_title %}manager panel{% endblock %}
 {% block page_title %}داشبورد{% endblock %}
 
+{% block css_file %}
+    <link rel="stylesheet" href={% static "custom/css/offline_payment_charge.css" %}>
+{% endblock %}
 
 {% block content %}
-    <b>These items will be added soon:</b>
-    <p>+ result poll</p>
-    <p>+ recent transaction and activity</p>
-    <p>+ Useful data in chart format</p>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+
+    <div class="row">
+        <div class="col-lg-3 col-6">
+
+            <div class="small-box bg-success">
+                <div class="inner">
+                    <h4>اعلان</h4>
+                </div>
+                <a href="{% url 'notification_app_manager:create_notification' %}" class="small-box-footer">
+                    ایجاد <i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-6">
+
+            <div class="small-box bg-primary">
+                <div class="inner">
+                    <h4>شارژ</h4>
+                </div>
+                <a href="{% url 'charge_app_manager:create_charge' %}" class="small-box-footer">
+                    ایجاد <i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-6">
+
+            <div class="small-box bg-danger">
+                <div class="inner">
+                    <h4>نظرسنجی</h4>
+                </div>
+                <a href="{% url 'poll_manager:create_poll' %}" class="small-box-footer">
+                    ایجاد <i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-6">
+
+            <div class="small-box bg-warning">
+                <div class="inner">
+                    <h4>درخواست تسویه</h4>
+                </div>
+                <a href="{% url 'payment_request_app:create_payment_request' %}" class="small-box-footer">
+                    ایجاد <i class="fas fa-arrow-circle-right"></i>
+                </a>
+            </div>
+        </div>
+
+    </div><!-- /.create-buttons -->
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card card-danger">
+                <div class="card-header">
+                    <h5>وضعیت آخرین نظرسنجی</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chartjs-size-monitor">
+                        <div class="chartjs-size-monitor-expand">
+                            <div class=""></div>
+                        </div>
+                        <div class="chartjs-size-monitor-shrink">
+                            <div class=""></div>
+                        </div>
+                    </div>
+                    <canvas id="chart"
+                            style="min-height: 250px; height: 250px; max-height: 500px; max-width: 500px; display: block; width: 334px;"
+                            width="334" height="250" class="chartjs-render-monitor"></canvas>
+                </div>
+
+            </div>
+        </div><!-- /.last-poll -->
+        <div class="col-md-6">
+            <div class="card card-warning">
+                <div class="card-header">
+                    <h5>5 درخواست پرداخت آخر</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-hover dataTable">
+                        <thead>
+                        <tr>
+                            <th>مبلغ</th>
+                            <th>وضعیت پرداخت</th>
+                            <th>زمان درخواست</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for request in last_five_request %}
+                            <tr>
+                                <td>{{ request.amount|intcomma:False }}</td>
+                                <td>
+                                    {% if request.paid %}
+                                        پرداخت شده
+                                    {% else %}
+                                        پرداخت نشده
+                                    {% endif %}
+                                </td>
+                                <td>{{ request.request_time|naturaltime }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div><!-- /.payment-requests -->
+    </div><!-- /.last-poll & payment-requests -->
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h5>وضعیت 5 قبض اخیر</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-hover dataTable">
+                        <thead>
+                        <tr>
+                            <th>عنوان</th>
+                            <th>دسته بندی</th>
+                            <th>تعداد پرداخت نشده</th>
+                            <th>تعداد پرداخت شده</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for charge in last_five_service_charge %}
+                            <tr>
+                                <td>{{ charge }}</td>
+                                <td>{{ charge.category }}</td>
+                                <td>{{ charge.get_sum_unpaid_status_charge }}</td>
+                                <td>{{ charge.get_sum_paid_status_charge }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div><!-- /.service charges -->
+        <div class="col-md-6">
+            <div class="card card-success">
+                <div class="card-header">
+                    <h5>وضعیت 5 اعلان اخیر</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-hover dataTable">
+                        <thead>
+                        <tr>
+                            <th>عنوان</th>
+                            <th>تعداد بازدید ها</th>
+                            <th>تعداد نظرات</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for notification in notifications %}
+                            <tr>
+                                <td>{{ notification.title }}</td>
+                                <td>{{ notification.get_sum_hits }}</td>
+                                <td>{{ notification.get_sum_comments }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div><!-- /.notification -->
+    </div><!-- /.service-charge & notification -->
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card card-gray">
+                <div class="card-header">
+                    <h5>اطلاعات ساختمان</h5>
+                </div>
+                <div class="card-body">
+                    <label for="name">نام ساختمان</label>
+                    <input class="form-control" id='name' type="text" value="{{ building.name }}" disabled>
+
+                    <label for="rules">قوانین ساختمان</label>
+                    <input class="form-control" id="rules" type="text" value="{{ building.rules }}" disabled>
+
+                    <label for="credit">موجودی ساختمان</label>
+                    <input class="form-control" id="credit" type="text" value="{{ building.credit }}" disabled>
+
+                    <label for="get_sum_units">تعداد واحد ها</label>
+                    <input class="form-control" id="get_sum_units" type="text" value="{{ building.get_sum_units }}"
+                           disabled>
+                </div>
+            </div>
+        </div><!-- /.building-information -->
+        <div class="col-md-6">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h5>کارت بانکی ساختمان</h5>
+                </div>
+                <div class="card-body">
+                    <div class="text-center">
+                        <div id="container-bank-card">
+                            {% with 'bank_type/'|add:request.user.unit.building.card_type|add:'.png' as bank_type %}
+                                <img src="{% static bank_type %}" style="width:100%;">
+                            {% endwith %}
+                            <div id="card-number">
+                                {{ request.user.unit.building.card_number }}
+                            </div>
+                            <div id="owner-card">
+                                {{ request.user.unit.building.owner_card }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.card-bank -->
+    </div><!-- /.building-information & card-bank -->
+
+    <script>
+        var myChart1 = document.getElementById('chart').getContext('2d');
+
+        // Global Options
+        Chart.defaults.global.defaultFontFamily = 'Lato';
+        Chart.defaults.global.defaultFontSize = 18;
+        Chart.defaults.global.defaultFontColor = '#777';
+
+        var massPopChart = new Chart(myChart1, {
+            type: 'doughnut', // bar, horizontalBar, pie, line, doughnut, radar, polarArea
+            data: {
+                labels: [
+                    {% for option in poll_options %}
+                        '{{ option }}',
+                    {% endfor %}
+                ],
+                datasets: [{
+                    label: 'Population',
+                    data: [
+                        {% for option in poll_options %}
+                            {{ option.get_number_of_vote }},
+                        {% endfor %}
+                    ],
+                    //backgroundColor:'green',
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)',
+                        'rgba(255, 159, 64, 0.6)',
+                        'rgba(255, 99, 132, 0.6)'
+                    ],
+                    borderWidth: 1,
+                    borderColor: '#777',
+                    hoverBorderWidth: 3,
+                    hoverBorderColor: '#000'
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: '{{ question_poll }}',
+                    fontSize: 25,
+                    responsive: true
+                },
+                legend: {
+                    display: true,
+                    position: 'right',
+                    labels: {
+                        fontColor: '#000'
+                    }
+                },
+                layout: {
+                    padding: {
+                        left: 50,
+                        right: 0,
+                        bottom: 0,
+                        top: 0
+                    }
+                },
+                tooltips: {
+                    enabled: true
+                }
+
+
+            }
+        });
+
+    </script>
 {% endblock %}
